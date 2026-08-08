@@ -1,0 +1,78 @@
+{
+  "_comment": [
+    "Every URL here was fetched and parsed successfully before being added.",
+    "mode 'always'  = the whole publication is on-topic; take everything.",
+    "mode 'filter'  = general-interest source; only keep items matching topics.",
+    "To add a source: verify its feed actually parses, then add it here.",
+    "Notably unavailable: Microgrid Knowledge and Data Center Frontier both",
+    "block feed access (404 on every path tried); RTO Insider serves malformed",
+    "XML; Reuters requires a licence. All are on-topic and worth re-testing."
+  ],
+  "sources": [
+    { "name": "Utility Dive — Distributed Energy", "url": "https://www.utilitydive.com/feeds/topic/distributed-energy/", "mode": "always", "topic": "grid" },
+    { "name": "Utility Dive", "url": "https://www.utilitydive.com/feeds/news/", "mode": "always", "topic": "grid" },
+    { "name": "Utility Dive — Storage", "url": "https://www.utilitydive.com/feeds/topic/storage/", "mode": "always", "topic": "storage" },
+    { "name": "Canary Media", "url": "https://www.canarymedia.com/feed", "mode": "always", "topic": "clean energy" },
+    { "name": "POWER Magazine", "url": "https://www.powermag.com/feed/", "mode": "always", "topic": "generation" },
+    { "name": "Energy-Storage.News", "url": "https://www.energy-storage.news/feed/", "mode": "always", "topic": "storage" },
+    { "name": "Latitude Media", "url": "https://www.latitudemedia.com/feed", "mode": "always", "topic": "energy + AI" },
+    { "name": "Heatmap News", "url": "https://heatmap.news/feeds/feed.rss", "mode": "always", "topic": "energy" },
+    { "name": "pv magazine USA", "url": "https://pv-magazine-usa.com/feed/", "mode": "always", "topic": "solar" },
+    { "name": "CleanTechnica", "url": "https://cleantechnica.com/feed/", "mode": "filter", "topic": "clean energy" },
+    { "name": "Electrek", "url": "https://electrek.co/feed/", "mode": "filter", "topic": "electrification" },
+    { "name": "ThinkGeoEnergy", "url": "https://www.thinkgeoenergy.com/feed/", "mode": "always", "topic": "geothermal" },
+    { "name": "World Nuclear News", "url": "https://www.world-nuclear-news.org/rss", "mode": "always", "topic": "nuclear" },
+    { "name": "Data Center Dynamics", "url": "https://www.datacenterdynamics.com/en/rss/", "mode": "always", "topic": "data centers" },
+    { "name": "IEEE Spectrum — Energy", "url": "https://spectrum.ieee.org/feeds/topic/energy.rss", "mode": "always", "topic": "technical" },
+    { "name": "The Quantum Insider", "url": "https://thequantuminsider.com/feed/", "mode": "always", "topic": "quantum" },
+    { "name": "Phys.org — Quantum Physics", "url": "https://phys.org/rss-feed/physics-news/quantum-physics/", "mode": "filter", "topic": "quantum" },
+    { "name": "MIT Technology Review", "url": "https://www.technologyreview.com/feed/", "mode": "filter", "topic": "frontier tech" },
+    { "name": "ScienceDaily — Energy Technology", "url": "https://www.sciencedaily.com/rss/matter_energy/energy_technology.xml", "mode": "filter", "topic": "research" },
+    { "name": "NextBigFuture", "url": "https://www.nextbigfuture.com/feed", "mode": "filter", "topic": "frontier tech" },
+    { "name": "Interesting Engineering", "url": "https://interestingengineering.com/feed", "mode": "filter", "topic": "frontier tech" }
+  ],
+
+  "_topics_comment": "Used to score items from 'filter' sources. An item needs at least one hit. Weights bias ordering when several items compete.",
+  "topics": {
+    "microgrid": 5, "micro-grid": 5, "edge compute": 5, "edge computing": 5,
+    "edge data cent": 5, "grid resilience": 5, "energy sovereignty": 5,
+    "distributed energy": 4, "der ": 3, "virtual power plant": 4, "vpp": 3,
+    "interconnection": 4, "transmission": 3, "substation": 3, "grid": 2,
+    "blackout": 4, "outage": 3, "curtailment": 3, "baseload": 3,
+
+    "data center": 5, "data centre": 5, "hyperscale": 4, "colocation": 3,
+    "ai infrastructure": 5, "compute demand": 4, "gpu": 2, "inference": 2,
+
+    "quantum computing": 5, "quantum": 3, "qubit": 4,
+    "superconduct": 3, "photonic": 3, "neuromorphic": 3,
+
+    "geothermal": 5, "enhanced geothermal": 5, "egs": 3,
+    "solar": 3, "photovoltaic": 3, "perovskite": 4, "wind power": 3, "offshore wind": 3,
+    "battery storage": 4, "energy storage": 4, "long duration": 4, "grid-scale": 4,
+    "sodium-ion": 4, "solid-state batter": 4, "flow batter": 4,
+
+    "hydrogen": 4, "green hydrogen": 5, "ammonia": 3, "synthetic fuel": 4,
+    "e-fuel": 4, "biofuel": 3, "sustainable aviation fuel": 4, "saf": 2,
+    "nuclear": 3, "smr": 4, "small modular reactor": 5, "fusion": 4,
+    "molten salt": 3, "thorium": 3,
+
+    "renewable": 3, "clean energy": 3, "decarboniz": 3, "electrification": 3,
+    "power purchase agreement": 4, "ppa": 3, "capacity market": 3,
+    "ferc": 3, "utility": 2, "megawatt": 3, "gigawatt": 3
+  },
+
+  "_exclude_comment": "Dropped regardless of score — promotional and off-topic noise.",
+  "exclude": [
+    "sponsored", "press release", "webinar", "podcast episode",
+    "advertisement", "partner content", "deal of the day", "coupon",
+    "discount", "black friday", "gift guide", "tesla stock", "share price",
+
+    "nuclear weapon", "nuclear blast", "nuclear war", "warhead", "missile",
+    "air force", "military", "battlefield", "munition",
+
+    "spacex", "starship", "rocket launch", "satellite launch", "mars mission",
+    "bitcoin", "cryptocurrency", "crypto mining", "nft",
+    "smartphone", "laptop review", "video game", "streaming service",
+    "e-bike", "electric bike", "car review", "test drive"
+  ]
+}

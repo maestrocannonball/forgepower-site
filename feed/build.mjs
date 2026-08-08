@@ -180,6 +180,23 @@ ${items}
 `
 );
 
+const NEWS_FILE = join(ROOT, 'news.json');
+let news = [];
+if (existsSync(NEWS_FILE)) {
+  try {
+    news = JSON.parse(readFileSync(NEWS_FILE, 'utf8')).items || [];
+  } catch (err) {
+    console.warn(`Warning: could not read news.json (${err.message}); building without news.`);
+  }
+}
+
+const newsCard = (n) => `<article>
+  <p class="meta"><time datetime="${n.date}">${human(new Date(n.date))}</time>
+  <span class="tag">${htmlEscape(n.source)}</span></p>
+  <h2><a href="${htmlEscape(n.link)}" target="_blank" rel="noopener noreferrer">${htmlEscape(n.title)}</a></h2>
+  <p>${htmlEscape(n.excerpt)}</p>
+</article>`;
+
 const page = (title, inner, extraHead = '') => `<!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -201,6 +218,8 @@ article h2{font-size:1.2rem;margin:.2rem 0 .4rem;line-height:1.3}
 article h2 a{color:inherit;text-decoration:none}
 article h2 a:hover{text-decoration:underline}
 article p{margin:0;color:var(--soft)}
+h2.section{font-size:1.5rem;margin:3.5rem 0 .4rem;padding-top:2.5rem;border-top:3px solid var(--ink)}
+.more{margin-top:1.5rem;font-weight:600}
 .meta{font-size:.82rem;color:var(--soft);display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
 .tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;
 padding:.1rem .45rem;border-radius:999px;border:1px solid var(--rule);color:var(--soft)}
@@ -230,6 +249,16 @@ ${entries
 </article>`
   )
   .join('\n')}
+${
+  news.length
+    ? `<h2 class="section">Energy &amp; Frontier Tech</h2>
+<p class="sub">Industry headlines we're tracking — energy, micro-grids, edge compute, data
+centers, quantum, geothermal, nuclear and next-generation fuels.
+<br><a href="/news/">See all ${news.length}</a> · <a href="/news.xml">Subscribe via RSS</a></p>
+${news.slice(0, 8).map(newsCard).join('\n')}
+<p class="more"><a href="/news/">More industry news →</a></p>`
+    : ''
+}
 <footer>© ${new Date().getFullYear()} Forge Power · <a href="mailto:${SITE.email}">${SITE.email}</a></footer>`
   )
 );
@@ -243,6 +272,62 @@ writeFileSync(
   Cache-Control: public, max-age=600
 `
 );
+
+/* ---------- curated industry news (separate feed) ---------- */
+
+/*
+  News lives in its own feed on purpose. Someone subscribing to The Gridline is
+  subscribing to Forge's point of view; burying that under twenty syndicated
+  headlines a week would turn it into a clipping service. Two feeds, one build.
+
+  Copyright: headline + short excerpt + attribution + link to the publisher.
+  Never full text.
+*/
+if (news.length) {
+  writeFileSync(
+    join(OUT, 'news.xml'),
+    `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Energy &amp; Frontier Tech — curated by Forge Power</title>
+    <link>${xmlEscape(SITE.origin)}/news/</link>
+    <description>Industry headlines across energy, micro-grids, edge compute, data centers, quantum, geothermal, nuclear and next-generation fuels. Curated by Forge Power; each item links to its original publisher.</description>
+    <language>${SITE.language}</language>
+    <lastBuildDate>${rfc822(new Date())}</lastBuildDate>
+    <atom:link href="${SITE.origin}/news.xml" rel="self" type="application/rss+xml"/>
+${news
+  .map(
+    (n) => `    <item>
+      <title>${xmlEscape(n.title)}</title>
+      <link>${xmlEscape(n.link)}</link>
+      <guid isPermaLink="true">${xmlEscape(n.link)}</guid>
+      <source url="${xmlEscape(SITE.origin)}/news.xml">${xmlEscape(n.source)}</source>
+      <description>${xmlEscape(n.excerpt)}</description>
+      <pubDate>${rfc822(new Date(n.date))}</pubDate>
+    </item>`
+  )
+  .join('\n')}
+  </channel>
+</rss>
+`
+  );
+
+  mkdirSync(join(OUT, 'news'), { recursive: true });
+  writeFileSync(
+    join(OUT, 'news', 'index.html'),
+    page(
+      'Energy & Frontier Tech — curated by Forge Power',
+      `<p class="meta"><a href="/">← The Gridline</a></p>
+<h1>Energy &amp; Frontier Tech</h1>
+<p class="sub">Headlines across energy, micro-grids, edge compute, data centers, quantum,
+geothermal, nuclear and next-generation fuels. Every item links to its original publisher.
+<br><a href="/news.xml">Subscribe via RSS</a></p>
+${news.map(newsCard).join('\n')}
+<footer>Curated automatically from ${new Set(news.map((n) => n.source)).size} industry
+sources. Headlines and excerpts remain the property of their publishers.</footer>`
+    )
+  );
+}
 
 let hosted = 0;
 for (const e of entries) {

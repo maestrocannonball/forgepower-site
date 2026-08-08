@@ -1,0 +1,832 @@
+{
+  "fetchedAt": "2026-08-08T07:18:34.472Z",
+  "count": 60,
+  "items": [
+    {
+      "title": "The Road To Green Hydrogen Is Paved With Green Deuterium",
+      "link": "https://cleantechnica.com/2026/08/07/green-hydrogen-us-renewable-energy-delaware-mid-atlantic/",
+      "source": "CleanTechnica",
+      "topic": "clean energy",
+      "date": "2026-08-08T02:17:14.000Z",
+      "excerpt": "The US startup Aternium aims to crack the green hydrogen code with a new electrolysis system powered by renewable energy and co-producing deuterium. The post The Road To Green Hydrogen Is Paved With Green Deuterium…",
+      "score": 21,
+      "matched": [
+        "hydrogen",
+        "green hydrogen",
+        "renewable"
+      ]
+    },
+    {
+      "title": "U.S. Battery Storage Capacity Averaged 70% Growth Over The Last Three Years",
+      "link": "https://cleantechnica.com/2026/08/07/u-s-battery-storage-capacity-averaged-70-growth-over-the-last-three-years/",
+      "source": "CleanTechnica",
+      "topic": "clean energy",
+      "date": "2026-08-08T00:32:31.000Z",
+      "excerpt": "Utility-scale battery storage capacity in the United States increased significantly during the last three years, with an annual average growth rate of 70%. By the end of 2025, the U.S. power system had operational…",
+      "score": 13,
+      "matched": [
+        "battery storage",
+        "utility",
+        "gigawatt"
+      ]
+    },
+    {
+      "title": "Aurora project moves toward 47-hole drilling amid renewed US nuclear fuel push",
+      "link": "https://interestingengineering.com/energy/eagle-nuclear-aurora-project-47-hole-drilling",
+      "source": "Interesting Engineering",
+      "topic": "frontier tech",
+      "date": "2026-08-07T23:57:58.000Z",
+      "excerpt": "The United States wants to rebuild its domestic uranium supply chain, and one newly listed...",
+      "score": 6,
+      "matched": [
+        "nuclear"
+      ]
+    },
+    {
+      "title": "IBM’s 156-qubit processor joins GPUs to calculate electrostatic energy in an enzyme",
+      "link": "https://interestingengineering.com/science/qc-ware-ibm-quantum-processor-hybrid-chemistry",
+      "source": "Interesting Engineering",
+      "topic": "frontier tech",
+      "date": "2026-08-07T23:18:00.000Z",
+      "excerpt": "QC Ware, a California-based quantum computing software company, has combined conventional computing with a quantum...",
+      "score": 20,
+      "matched": [
+        "gpu",
+        "quantum computing",
+        "quantum",
+        "qubit"
+      ]
+    },
+    {
+      "title": "Amazon Is Building America’s Biggest Fossil Fuel Plant to Power AI",
+      "link": "https://heatmap.news/energy/amazon-gw-ranch",
+      "source": "Heatmap News",
+      "topic": "energy",
+      "date": "2026-08-07T22:07:16.000Z",
+      "excerpt": "The data center buildout has hit a new inflection point. It has long been true that artificial intelligence is fueling climate change by driving up power demand; more recently, tech companies have started directly…",
+      "score": 37,
+      "matched": [
+        "der",
+        "interconnection",
+        "grid",
+        "baseload"
+      ]
+    },
+    {
+      "title": "New 'shape-shifting' architecture brings versatility to photonic quantum computing",
+      "link": "https://phys.org/news/2026-08-shifting-architecture-versatility-photonic-quantum.html",
+      "source": "Phys.org — Quantum Physics",
+      "topic": "quantum",
+      "date": "2026-08-07T21:00:01.000Z",
+      "excerpt": "Using light to process quantum information is one of the most promising approaches to building future quantum computers. Light particles, known as photons, are excellent carriers of quantum information, but their lack of…",
+      "score": 22,
+      "matched": [
+        "quantum computing",
+        "quantum",
+        "photonic"
+      ]
+    },
+    {
+      "title": "Quantum-inspired tech lets engineers test tens of thousands of drone designs at once",
+      "link": "https://interestingengineering.com/military/quantum-inspired-computing-drone-propeller-design",
+      "source": "Interesting Engineering",
+      "topic": "frontier tech",
+      "date": "2026-08-07T19:23:07.000Z",
+      "excerpt": "Drone maker Modovolo is using quantum-inspired computing to speed up the design of its next-generation...",
+      "score": 6,
+      "matched": [
+        "quantum"
+      ]
+    },
+    {
+      "title": "How to Talk to Climate-Minded Investors About Data Centers",
+      "link": "https://heatmap.news/plus/the-fight/qa/ceres-colette-lamontagne",
+      "source": "Heatmap News",
+      "topic": "energy",
+      "date": "2026-08-07T17:34:47.000Z",
+      "excerpt": "This week’s conversation is with Colette Lamontagne, senior director for electric power at the sustainability finance advocacy group Ceres. Her team just released a shareholder engagement guide for the utility space…",
+      "score": 40,
+      "matched": [
+        "der",
+        "transmission",
+        "grid",
+        "data center"
+      ]
+    },
+    {
+      "title": "Bridge DC launches prefabricated data center power module",
+      "link": "https://www.datacenterdynamics.com/en/news/bridge-dc-launches-prefabricated-data-center-power-module/",
+      "source": "Data Center Dynamics",
+      "topic": "data centers",
+      "date": "2026-08-07T17:00:55.000Z",
+      "excerpt": "Container contains transformers, power distribution, UPS, and cooling infrastructure",
+      "score": 12,
+      "matched": [
+        "data center"
+      ]
+    },
+    {
+      "title": "NTT Data reports half a billion dollars of data center investment in Q1 financial results",
+      "link": "https://www.datacenterdynamics.com/en/news/ntt-data-reports-half-a-billion-dollars-of-data-center-investment-in-q1-financial-results/",
+      "source": "Data Center Dynamics",
+      "topic": "data centers",
+      "date": "2026-08-07T17:00:40.000Z",
+      "excerpt": "Data center sales of $733 million",
+      "score": 12,
+      "matched": [
+        "data center"
+      ]
+    },
+    {
+      "title": "Data centers have a Texas-sized energy problem",
+      "link": "https://www.latitudemedia.com/news/open-circuit-data-centers-have-a-texas-sized-energy-problem/",
+      "source": "Latitude Media",
+      "topic": "energy + AI",
+      "date": "2026-08-07T16:52:54.000Z",
+      "excerpt": "As more states pause data centers, how will they use the opportunity to pass energy policy? The post Data centers have a Texas-sized energy problem appeared first on Latitude Media .",
+      "score": 12,
+      "matched": [
+        "data center"
+      ]
+    },
+    {
+      "title": "UPLIFT project seeks to develop and demonstrate safe Enhanced Geothermal for Europe",
+      "link": "https://www.thinkgeoenergy.com/uplift-project-seeks-to-develop-and-demonstrate-safe-enhanced-geothermal-for-europe/",
+      "source": "ThinkGeoEnergy",
+      "topic": "geothermal",
+      "date": "2026-08-07T16:21:53.000Z",
+      "excerpt": "The UPLIFT consortium aims to develop and demonstrate technologies that will make Enhanced Geothermal Systems possible and safe to deploy in Europe. The post UPLIFT project seeks to develop and demonstrate safe Enhanced…",
+      "score": 26,
+      "matched": [
+        "geothermal",
+        "enhanced geothermal",
+        "saf"
+      ]
+    },
+    {
+      "title": "TuringQ Joins China’s IPO Pipeline as Quantum Firms Push Toward Commercialization",
+      "link": "https://thequantuminsider.com/2026/08/07/turingq-joins-chinas-ipo-pipeline-as-quantum-firms-push-toward-commercialization/",
+      "source": "The Quantum Insider",
+      "topic": "quantum",
+      "date": "2026-08-07T15:39:16.000Z",
+      "excerpt": "Insider Brief Shanghai-based TuringQ has entered the IPO preparation process, becoming the latest Chinese quantum computing company to pursue a public listing as the country’s quantum sector shifts its focus from…",
+      "score": 16,
+      "matched": [
+        "der",
+        "quantum computing",
+        "quantum"
+      ]
+    },
+    {
+      "title": "The utility billing system is preventing rate and program innovation",
+      "link": "https://www.utilitydive.com/news/utility-billing-system-preventing-rate-program-innovation/826053/",
+      "source": "Utility Dive",
+      "topic": "grid",
+      "date": "2026-08-07T15:00:00.000Z",
+      "excerpt": "Utilities are spending billions to modernize the grid but the system responsible for billing customers is not keeping up, writes GridX CCO Scott Engstrom.",
+      "score": 8,
+      "matched": [
+        "grid",
+        "utility"
+      ]
+    },
+    {
+      "title": "Post-Quantum Cryptography Timelines: When Will Organizations Migrate?",
+      "link": "https://thequantuminsider.com/2026/08/07/post-quantum-cryptography-timelines/",
+      "source": "The Quantum Insider",
+      "topic": "quantum",
+      "date": "2026-08-07T14:25:39.000Z",
+      "excerpt": "Insider Brief Every major organization has published a timeline. Governments, technology companies, financial institutions, critical infrastructure operators, and blockchain communities – all of the major players…",
+      "score": 11,
+      "matched": [
+        "der",
+        "quantum"
+      ]
+    },
+    {
+      "title": "Existing power plants are ‘bedrock’ in supplying data centers: Constellation CEO",
+      "link": "https://www.utilitydive.com/news/existing-power-plants-supply-data-centers-constellation/827326/",
+      "source": "Utility Dive",
+      "topic": "grid",
+      "date": "2026-08-07T14:23:04.000Z",
+      "excerpt": "Constellation Energy expects Texas&rsquo; Batch Zero large load interconnection process will resume without &ldquo;meaningful delay.&rdquo;",
+      "score": 16,
+      "matched": [
+        "interconnection",
+        "data center"
+      ]
+    },
+    {
+      "title": "Indosat reinforces AI push with 1GW data center play",
+      "link": "https://www.datacenterdynamics.com/en/news/indosat-reinforces-ai-push-with-1gw-data-center-play/",
+      "source": "Data Center Dynamics",
+      "topic": "data centers",
+      "date": "2026-08-07T13:20:36.000Z",
+      "excerpt": "The company is working with wider Ooredoo Group along with partners Nvidia and Nokia",
+      "score": 15,
+      "matched": [
+        "der",
+        "data center"
+      ]
+    },
+    {
+      "title": "SMR firm Nuclea inks MoU with New Mining to evaluate deployment of SMRs at data centers across US",
+      "link": "https://www.datacenterdynamics.com/en/news/smr-firm-nuclea-inks-mou-with-new-mining-to-evaluate-deployment-of-smrs-at-data-centers-across-us/",
+      "source": "Data Center Dynamics",
+      "topic": "data centers",
+      "date": "2026-08-07T13:10:32.000Z",
+      "excerpt": "Will test the viability of powering facilities behind the meter",
+      "score": 20,
+      "matched": [
+        "data center",
+        "smr"
+      ]
+    },
+    {
+      "title": "Students steer solar-powered racing cars to glory in American Solar Challenge",
+      "link": "https://pv-magazine-usa.com/2026/08/07/students-steer-solar-powered-racing-cars-to-glory-in-american-solar-challenge/",
+      "source": "pv magazine USA",
+      "topic": "solar",
+      "date": "2026-08-07T13:06:08.000Z",
+      "excerpt": "Following months of hard work on their solar cars, the winners of the Electrek American Solar Challenge 2026 were honored at a special awards ceremony held in Amarillo. Tesla is a long-time sponsor of the event, which is…",
+      "score": 8,
+      "matched": [
+        "solar"
+      ]
+    },
+    {
+      "title": "Fluence reports 164 GWh pipeline including major hyperscaler order",
+      "link": "https://pv-magazine-usa.com/2026/08/07/fluence-reports-164-gwh-pipeline-including-major-hyperscaler-order/",
+      "source": "pv magazine USA",
+      "topic": "solar",
+      "date": "2026-08-07T12:45:00.000Z",
+      "excerpt": "Increased demand from utilities, developers and data centers has led to a record order backlog for the energy storage manufacturer. Quarterly revenue increases despite production delays at new contract manufacturing…",
+      "score": 22,
+      "matched": [
+        "der",
+        "data center",
+        "hyperscale",
+        "energy storage"
+      ]
+    },
+    {
+      "title": "Sol-Ark introduces inverter app to streamline solar-plus-storage commissioning",
+      "link": "https://pv-magazine-usa.com/2026/08/07/sol-ark-introduces-inverter-app-to-streamline-solar-plus-storage-commissioning/",
+      "source": "pv magazine USA",
+      "topic": "solar",
+      "date": "2026-08-07T12:05:00.000Z",
+      "excerpt": "Sol-Ark has launched a dedicated mobile application designed to streamline commissioning and project management for solar-plus-storage installers.",
+      "score": 8,
+      "matched": [
+        "solar"
+      ]
+    },
+    {
+      "title": "Electrovaya launches stationary energy storage system for data center market",
+      "link": "https://www.datacenterdynamics.com/en/news/en/",
+      "source": "Data Center Dynamics",
+      "topic": "data centers",
+      "date": "2026-08-07T12:00:38.000Z",
+      "excerpt": "Announces commercial agreement with Amazon",
+      "score": 20,
+      "matched": [
+        "data center",
+        "energy storage"
+      ]
+    },
+    {
+      "title": "Texas Audit Could Delay 49.8 GW of Data Center Load, Cost Projects Up to $15 Billion, BNEF Warns",
+      "link": "https://www.powermag.com/texas-audit-could-delay-49-8-gw-of-data-center-load-cost-projects-up-to-15-billion-bnef-warns/",
+      "source": "POWER Magazine",
+      "topic": "generation",
+      "date": "2026-08-06T21:32:38.000Z",
+      "excerpt": "Texas Gov. Greg Abbott’s Aug. 3 order pausing all new data center connections to the Electric Reliability Council of Texas (ERCOT) grid until a comprehensive audit is complete could delay 49.8 GW of new data center…",
+      "score": 17,
+      "matched": [
+        "der",
+        "grid",
+        "data center"
+      ]
+    },
+    {
+      "title": "Data center power sales drive $220M increase in TVA’s net income",
+      "link": "https://www.utilitydive.com/news/data-center-tva-income-earnings-cumberland/827282/",
+      "source": "Utility Dive",
+      "topic": "grid",
+      "date": "2026-08-06T20:54:49.000Z",
+      "excerpt": "The federal utility&rsquo;s total operating revenue was $10 billion over the first nine months of the fiscal year, up 3% year-over-year, with a net income of $965 million.",
+      "score": 14,
+      "matched": [
+        "data center",
+        "utility"
+      ]
+    },
+    {
+      "title": "Rugged Switchgear–A Reliable Data Center’s Bedrock",
+      "link": "https://www.powermag.com/rugged-switchgear-a-reliable-data-centers-bedrock/",
+      "source": "POWER Magazine",
+      "topic": "generation",
+      "date": "2026-08-06T18:03:53.000Z",
+      "excerpt": "Ruggedly engineered and manufactured switchgear provides safe, redundant power while also delivering the resilience and continuous operation expected in large-scale data center environments. As demand for cloud services,…",
+      "score": 18,
+      "matched": [
+        "data center",
+        "hyperscale",
+        "saf"
+      ]
+    },
+    {
+      "title": "How foreign turbine suppliers are gearing up for a US geothermal boom",
+      "link": "https://www.latitudemedia.com/news/how-foreign-turbine-suppliers-are-gearing-up-for-a-us-geothermal-boom/",
+      "source": "Latitude Media",
+      "topic": "energy + AI",
+      "date": "2026-08-06T17:13:20.000Z",
+      "excerpt": "As next-gen geothermal enjoys new tailwinds stateside, the sector relies on equipment built abroad — and especially in Italy. The post How foreign turbine suppliers are gearing up for a US geothermal boom appeared first…",
+      "score": 12,
+      "matched": [
+        "geothermal"
+      ]
+    },
+    {
+      "title": "Two-qubit entangling gate flags its own errors as detectable photon losses",
+      "link": "https://phys.org/news/2026-08-qubit-entangling-gate-flags-errors.html",
+      "source": "Phys.org — Quantum Physics",
+      "topic": "quantum",
+      "date": "2026-08-06T16:40:01.000Z",
+      "excerpt": "Quantum errors are a normal part of quantum computing because fragile physical qubits (the tiny components storing data) can easily break down because of environmental noise, like heat, stray signals or microscopic…",
+      "score": 19,
+      "matched": [
+        "der",
+        "quantum computing",
+        "quantum",
+        "qubit"
+      ]
+    },
+    {
+      "title": "NRG nears 1.2-GW hyperscaler deal amid Texas data center pause",
+      "link": "https://www.utilitydive.com/news/nrg-nears-12-gw-hyperscaler-deal-amid-texas-data-center-pause/827212/",
+      "source": "Utility Dive",
+      "topic": "grid",
+      "date": "2026-08-06T14:16:56.000Z",
+      "excerpt": "President and CEO Robert Gaudette said NRG&rsquo;s approach to delivering customer-backed capacity would thrive in a more restrictive environment for data center development.&nbsp;",
+      "score": 20,
+      "matched": [
+        "data center",
+        "hyperscale"
+      ]
+    },
+    {
+      "title": "DOE Approves Safety Design of Deep Fission’s Underground SMR",
+      "link": "https://www.powermag.com/doe-approves-safety-design-of-deep-fissions-underground-smr/",
+      "source": "POWER Magazine",
+      "topic": "generation",
+      "date": "2026-08-06T13:47:17.000Z",
+      "excerpt": "California-based Deep Fission said the DOE signed off on the Nuclear Safety Design Agreement (NSDA) for its Gravity Nuclear Reactor. The group called it a major regulatory milestone that confirms Deep Fission's reactor…",
+      "score": 20,
+      "matched": [
+        "der",
+        "saf",
+        "nuclear",
+        "smr"
+      ]
+    },
+    {
+      "title": "Array Technologies surpasses 100 GW milestone, reports record $2.5 billion order book in Q2",
+      "link": "https://pv-magazine-usa.com/2026/08/06/array-technologies-surpasses-100-gw-milestone-reports-record-2-5-billion-order-book-in-q2/",
+      "source": "pv magazine USA",
+      "topic": "solar",
+      "date": "2026-08-06T13:18:30.000Z",
+      "excerpt": "Utility-scale solar tracking giant Array Technologies posted $342.1 million in second-quarter revenue and reached a company-record $2.5 billion order backlog, prompting the manufacturer to bump up its full-year…",
+      "score": 13,
+      "matched": [
+        "der",
+        "solar",
+        "utility"
+      ]
+    },
+    {
+      "title": "Ørsted energizes 250 MW battery storage system in Texas",
+      "link": "https://pv-magazine-usa.com/2026/08/06/orsted-energizes-250-mw-battery-storage-system-in-texas/",
+      "source": "pv magazine USA",
+      "topic": "solar",
+      "date": "2026-08-06T13:00:36.000Z",
+      "excerpt": "The 250 MW/500 MWh Old 300 Storage project in Fort Bend County is fully integrated into the ERCOT grid, adding stability alongside an existing 430 MW solar array.",
+      "score": 15,
+      "matched": [
+        "grid",
+        "solar",
+        "battery storage"
+      ]
+    },
+    {
+      "title": "New York’s Data Center Ban Won’t Solve Its Grid Problems",
+      "link": "https://spectrum.ieee.org/new-york-data-center-ban",
+      "source": "IEEE Spectrum — Energy",
+      "topic": "technical",
+      "date": "2026-08-06T13:00:04.000Z",
+      "excerpt": "New York isn’t particularly inundated with new data centers, but it just became the first U.S. state to ban them. In an executive order on 14 July, Governor Kathy Hochul imposed a moratorium of up to a year on data…",
+      "score": 46,
+      "matched": [
+        "der",
+        "interconnection",
+        "grid",
+        "data center"
+      ]
+    },
+    {
+      "title": "Texas data center pause puts 20% of US pipeline at risk of delay: BNEF",
+      "link": "https://www.utilitydive.com/news/texas-data-center-pause-puts-us-pipeline-risk-of-delay-bnef/827185/",
+      "source": "Utility Dive",
+      "topic": "grid",
+      "date": "2026-08-06T12:53:46.000Z",
+      "excerpt": "The longer the moratorium stays in place, the greater the risk to Texas&rsquo; data center boom, analysts at Bloomberg NEF said.",
+      "score": 12,
+      "matched": [
+        "data center"
+      ]
+    },
+    {
+      "title": "DC Circuit Court of Appeals upholds FERC plan to speed up permitting for US energy projects’ grid interconnection",
+      "link": "https://www.energy-storage.news/dc-circuit-court-of-appeals-upholds-ferc-plan-to-speed-up-permitting-for-us-energy-projects-grid-interconnection/",
+      "source": "Energy-Storage.News",
+      "topic": "storage",
+      "date": "2026-08-06T12:50:06.000Z",
+      "excerpt": "A US court has upheld a Federal Energy Regulatory Commission (FERC) plan to speed up the permitting process for connecting energy projects to the grid.",
+      "score": 20,
+      "matched": [
+        "interconnection",
+        "grid",
+        "ferc"
+      ]
+    },
+    {
+      "title": "The Missing Link to VPP Success? Customer Knowledge.",
+      "link": "https://www.canarymedia.com/articles/sponsored/the-missing-link-to-vpp-success-customer-knowledge",
+      "source": "Canary Media",
+      "topic": "clean energy",
+      "date": "2026-08-06T07:00:00.000Z",
+      "excerpt": "Signs of the momentum behind virtual power plants (VPPs) are everywhere. States including New Jersey, Virginia, and Illinois are advancing legislation and regulations designed to accelerate VPP adoption, hoping to seize…",
+      "score": 16,
+      "matched": [
+        "distributed energy",
+        "virtual power plant",
+        "vpp"
+      ]
+    },
+    {
+      "title": "Electric Mining Truck Uses Sodium-Ion Batteries",
+      "link": "https://cleantechnica.com/2026/08/05/electric-mining-truck-uses-sodium-ion-batteries/",
+      "source": "CleanTechnica",
+      "topic": "clean energy",
+      "date": "2026-08-06T00:04:28.000Z",
+      "excerpt": "Sodium-ion batteries are one of the hot new things in the EV and broader cleantech industry. They are providing a next era of electrification. That even includes electric mining trucks now! Hina Battery and Shaanxi Tonly…",
+      "score": 14,
+      "matched": [
+        "der",
+        "sodium-ion",
+        "electrification"
+      ]
+    },
+    {
+      "title": "IEEE Course Teaches How to Use AI to Modernize Power Grids",
+      "link": "https://spectrum.ieee.org/ieee-course-ai-power-grids",
+      "source": "IEEE Spectrum — Energy",
+      "topic": "technical",
+      "date": "2026-08-05T18:00:03.000Z",
+      "excerpt": "Today’s U.S. electrical grid, among the largest, most complex systems ever built, is operating at its limit. The combination of rapid industrial growth, more frequent extreme weather, and a record surge in electricity…",
+      "score": 41,
+      "matched": [
+        "microgrid",
+        "grid resilience",
+        "transmission",
+        "grid"
+      ]
+    },
+    {
+      "title": "California DER wholesale market participation could grow 2+ GW from CAISO ‘accounting change’: advocate",
+      "link": "https://www.utilitydive.com/news/california-der-wholesale-market-participation-could-grow-2-gw-from-caiso/827122/",
+      "source": "Utility Dive — Distributed Energy",
+      "topic": "grid",
+      "date": "2026-08-05T17:43:20.000Z",
+      "excerpt": "Dive Brief: A revised demand response framework expected from the California Independent System Operator on Aug. 19 could incentivize upwards of 2 GW of behind-the-meter energy resources to participate in the ISO&rsquo;s…",
+      "score": 26,
+      "matched": [
+        "distributed energy",
+        "der",
+        "interconnection",
+        "transmission"
+      ]
+    },
+    {
+      "title": "Entergy to consider deployment of Holtec's SMR-300",
+      "link": "https://www.world-nuclear-news.org/articles/entergy-to-consider-deployment-of-holtecs-smr-300",
+      "source": "World Nuclear News",
+      "topic": "nuclear",
+      "date": "2026-08-05T14:41:06.000Z",
+      "excerpt": "Holtec International has signed a memorandum of agreement with US utility Entergy and South Korea's Hyundai Engineering & Construction to evaluate opportunities to advance the potential deployment of its SMR-300 small…",
+      "score": 23,
+      "matched": [
+        "der",
+        "smr",
+        "small modular reactor",
+        "utility"
+      ]
+    },
+    {
+      "title": "AI’s Obstacle: Why the Grid Can’t Keep Pace With the Data Center Boom",
+      "link": "https://www.powermag.com/ais-obstacle-why-the-grid-cant-keep-pace-with-the-data-center-boom/",
+      "source": "POWER Magazine",
+      "topic": "generation",
+      "date": "2026-08-05T13:53:27.000Z",
+      "excerpt": "Growth in artificial intelligence (AI) is outpacing the world’s ability to generate enough power to sustain it. As AI adoption accelerates worldwide, it’s colliding with a power system that wasn’t built for its level of…",
+      "score": 16,
+      "matched": [
+        "grid",
+        "data center"
+      ]
+    },
+    {
+      "title": "U.S. Diesel Prices Under Trump Surpass Biden-Era Average",
+      "link": "https://heatmap.news/am/us-diesel-prices",
+      "source": "Heatmap News",
+      "topic": "energy",
+      "date": "2026-08-05T11:56:01.000Z",
+      "excerpt": "Current conditions: South Korea’s heat wave has killed at least 16 people after the southeastern city of Yangsan recorded an all-time national temperature high of nearly 109 degrees Fahrenheit • Washington authorities…",
+      "score": 40,
+      "matched": [
+        "der",
+        "grid",
+        "blackout",
+        "geothermal"
+      ]
+    },
+    {
+      "title": "Invinity sells 43MWh long-duration flow battery system to US Midwest rural electric cooperative",
+      "link": "https://www.energy-storage.news/invinity-sells-43mwh-long-duration-flow-battery-system-to-us-midwest-rural-electric-cooperative/",
+      "source": "Energy-Storage.News",
+      "topic": "storage",
+      "date": "2026-08-05T10:31:52.000Z",
+      "excerpt": "Flow battery company Invinity Energy Systems has sold 43MWh of battery systems to utility Dairyland Power Cooperative for deployment across long duration energy storage (LDES) projects in the US Midwest.",
+      "score": 20,
+      "matched": [
+        "energy storage",
+        "long duration",
+        "flow batter",
+        "utility"
+      ]
+    },
+    {
+      "title": "PJM’s big new data center plan: Make the states figure it out",
+      "link": "https://www.canarymedia.com/articles/data-centers/pjm-data-center-plan",
+      "source": "Canary Media",
+      "topic": "clean energy",
+      "date": "2026-08-05T07:30:00.000Z",
+      "excerpt": "PJM Interconnection, the biggest grid operator in the U.S., has finally settled on a plan to prevent data centers from causing other customers’ utility bills to soar further in its 13-state territory. That plan relies…",
+      "score": 20,
+      "matched": [
+        "interconnection",
+        "grid",
+        "data center",
+        "utility"
+      ]
+    },
+    {
+      "title": "Abbott Orders Full Audit of Texas Data Center Interconnection Queue, Threatens to Deny Grid Access",
+      "link": "https://www.powermag.com/abbott-orders-full-audit-of-texas-data-center-interconnection-queue-threatens-to-deny-grid-access/",
+      "source": "POWER Magazine",
+      "topic": "generation",
+      "date": "2026-08-04T21:05:52.000Z",
+      "excerpt": "Texas Governor Greg Abbott has directed the Public Utility Commission of Texas (PUCT) and the Electric Reliability Council of Texas (ERCOT) to conduct a comprehensive audit of every data center advancing through the…",
+      "score": 26,
+      "matched": [
+        "interconnection",
+        "grid",
+        "data center",
+        "utility"
+      ]
+    },
+    {
+      "title": "One Senate Democrat’s answer to Trump’s ‘ratepayer protection pledge’",
+      "link": "https://www.latitudemedia.com/news/one-senate-democrats-answer-to-trumps-ratepayer-protection-pledge/",
+      "source": "Latitude Media",
+      "topic": "energy + AI",
+      "date": "2026-08-04T20:42:55.000Z",
+      "excerpt": "Sen. Heinrich’s Grid Savings Act would reopen the question of FERC’s authority over large load interconnection. The post One Senate Democrat’s answer to Trump’s ‘ratepayer protection pledge’ appeared first on Latitude…",
+      "score": 11,
+      "matched": [
+        "interconnection",
+        "grid",
+        "ferc"
+      ]
+    },
+    {
+      "title": "Battery-eligible New Jersey VPP program begins to take shape",
+      "link": "https://www.utilitydive.com/news/battery-eligible-new-jersey-vpp-program-begins-to-take-shape/826969/",
+      "source": "Utility Dive — Distributed Energy",
+      "topic": "grid",
+      "date": "2026-08-04T16:50:30.000Z",
+      "excerpt": "Dive Brief: Customer-sited energy storage devices will be among the assets cleared to participate in a two-year, technology-neutral virtual power plant program administered by electric distribution companies in New…",
+      "score": 41,
+      "matched": [
+        "distributed energy",
+        "der",
+        "virtual power plant",
+        "vpp"
+      ]
+    },
+    {
+      "title": "$700M microgrid bill has state energy office, electrical manufacturer support",
+      "link": "https://www.utilitydive.com/news/electrical-manufacturers-state-regulators-back-700m-microgrid-bill/826868/",
+      "source": "Utility Dive — Storage",
+      "topic": "storage",
+      "date": "2026-08-04T15:07:30.000Z",
+      "excerpt": "Dive Brief: A bill to bolster the adoption of microgrids with a $200 million U.S. Department of Energy pilot and $500 million in state grants was introduced in the Senate Wednesday by Sen. Peter Welch, D-Vt., ranking…",
+      "score": 46,
+      "matched": [
+        "microgrid",
+        "grid resilience",
+        "distributed energy",
+        "der"
+      ]
+    },
+    {
+      "title": "Greek ministers to examine nuclear energy options",
+      "link": "https://www.world-nuclear-news.org/articles/greek-ministers-to-examine-nuclear-energy-options",
+      "source": "World Nuclear News",
+      "topic": "nuclear",
+      "date": "2026-08-04T14:44:50.000Z",
+      "excerpt": "The Greek Council of Ministers has set up an Inter-Ministerial Committee to explore the potential for small modular reactors.",
+      "score": 13,
+      "matched": [
+        "nuclear",
+        "small modular reactor"
+      ]
+    },
+    {
+      "title": "This hydrogen turbine turns controlled explosions into electricity",
+      "link": "https://www.sciencedaily.com/releases/2026/08/260803080919.htm",
+      "source": "ScienceDaily — Energy Technology",
+      "topic": "research",
+      "date": "2026-08-04T13:02:27.000Z",
+      "excerpt": "Scientists have successfully generated electricity with a hydrogen turbine that produces its own pressure through detonation waves instead of relying on a mechanical compressor. The breakthrough could unlock dramatically…",
+      "score": 11,
+      "matched": [
+        "hydrogen",
+        "clean energy"
+      ]
+    },
+    {
+      "title": "85 Degrees secures €200m financing for geothermal heating projects in the Netherlands",
+      "link": "https://www.thinkgeoenergy.com/85-degrees-secures-e200m-financing-for-geothermal-heating-projects-in-the-netherlands/",
+      "source": "ThinkGeoEnergy",
+      "topic": "geothermal",
+      "date": "2026-08-04T09:13:40.000Z",
+      "excerpt": "85 Degrees Renewables has closed a €200 million project financing facility with ING and Rabobank to support geothermal heating projects in the Netherlands. The post 85 Degrees secures €200m financing for geothermal…",
+      "score": 15,
+      "matched": [
+        "geothermal",
+        "renewable"
+      ]
+    },
+    {
+      "title": "Load smoothing, cold-start backup and speed-to-power: Fluence maps the battery storage opportunity for Australian data centres",
+      "link": "https://www.energy-storage.news/load-smoothing-cold-start-backup-and-speed-to-power-fluence-maps-the-battery-storage-opportunity-for-australian-data-centres/",
+      "source": "Energy-Storage.News",
+      "topic": "storage",
+      "date": "2026-08-04T04:16:10.000Z",
+      "excerpt": "ESN Premium speaks with Fluence's Jeff Monday and Sam Markham on the opportunity battery energy storage could provide data centres in Australia.",
+      "score": 24,
+      "matched": [
+        "data centre",
+        "battery storage",
+        "energy storage"
+      ]
+    },
+    {
+      "title": "Scoop: Clearway Cancels Plan to Swap Solar Farm for Data Center and Gas Plant",
+      "link": "https://heatmap.news/sparks/clearway-energy-data-center-gas-solar",
+      "source": "Heatmap News",
+      "topic": "energy",
+      "date": "2026-08-03T19:03:48.000Z",
+      "excerpt": "Clearway says it is backing off its plans to build a data center and gas power plant on federal land, days after Heatmap revealed the energy developer’s proposal. Last week, I reported that Clearway asked the Trump…",
+      "score": 28,
+      "matched": [
+        "data center",
+        "solar",
+        "battery storage",
+        "clean energy"
+      ]
+    },
+    {
+      "title": "Perimeter Compute wants to turn spare office power into edge AI data centers",
+      "link": "https://www.latitudemedia.com/news/perimeter-compute-turn-spare-office-power-into-edge-ai-data-centers/",
+      "source": "Latitude Media",
+      "topic": "energy + AI",
+      "date": "2026-08-03T12:00:00.000Z",
+      "excerpt": "Exclusive: The startup is launching out of stealth with a plan to put GPUs in commercial buildings with excess capacity. The post Perimeter Compute wants to turn spare office power into edge AI data centers appeared…",
+      "score": 14,
+      "matched": [
+        "data center",
+        "gpu"
+      ]
+    },
+    {
+      "title": "ARC partners with INL for SMR deployment",
+      "link": "https://www.world-nuclear-news.org/articles/arc-partners-with-inl-for-smr-deployment",
+      "source": "World Nuclear News",
+      "topic": "nuclear",
+      "date": "2026-08-03T09:27:25.000Z",
+      "excerpt": "ARC Clean Technology has signed an agreement aiming for the first-of-a-kind deployment of an ARC-100 small modular reactor at Idaho National Laboratory.",
+      "score": 15,
+      "matched": [
+        "smr",
+        "small modular reactor"
+      ]
+    },
+    {
+      "title": "Transcript: Permitting Reform, Data Centers, and More With Senator Heinrich and Secretary Granholm",
+      "link": "https://heatmap.news/podcast/shift-key-heinrich-granholm-transcript",
+      "source": "Heatmap News",
+      "topic": "energy",
+      "date": "2026-08-03T09:05:10.000Z",
+      "excerpt": "The Democratic Party’s climate and energy policy is at a difficult moment. Over the past year and a half, the Trump administration has attacked solar and wind energy, started an inflationary war, and repealed key parts…",
+      "score": 76,
+      "matched": [
+        "energy sovereignty",
+        "distributed energy",
+        "der",
+        "virtual power plant"
+      ]
+    },
+    {
+      "title": "Grid utilization: Useful policy tool or a distraction?",
+      "link": "https://www.latitudemedia.com/news/grid-utilization-useful-policy-tool-or-a-distraction/",
+      "source": "Latitude Media",
+      "topic": "energy + AI",
+      "date": "2026-07-31T22:09:31.000Z",
+      "excerpt": "As Virginia rolls out its first-in-the-nation law, analysts debate whether measuring spare capacity will actually lower rates. The post Grid utilization: Useful policy tool or a distraction? appeared first on Latitude…",
+      "score": 6,
+      "matched": [
+        "grid"
+      ]
+    },
+    {
+      "title": "This huge Texas solar hub is nearly 1 GW, and it’s only half built",
+      "link": "https://electrek.co/2026/07/31/this-huge-texas-solar-hub-is-nearly-1-gw-and-its-only-half-built/",
+      "source": "Electrek",
+      "topic": "electrification",
+      "date": "2026-07-31T19:14:20.000Z",
+      "excerpt": "Renewable energy developer Origis Energy has brought another 500 megawatts (MWdc) of solar online at its Rockhound complex in West Texas, pushing the sprawling project’s operating capacity to nearly 1 gigawatt (GW).",
+      "score": 15,
+      "matched": [
+        "solar",
+        "renewable",
+        "megawatt",
+        "gigawatt"
+      ]
+    },
+    {
+      "title": "Exelon ‘high probability’ data center load falls 40%",
+      "link": "https://www.utilitydive.com/news/exelon-data-center-load-new-jersey-battery-earnings/826686/",
+      "source": "Utility Dive — Storage",
+      "topic": "storage",
+      "date": "2026-07-31T11:57:09.000Z",
+      "excerpt": "Exelon&rsquo;s &ldquo;high probability&rdquo; data center load &nbsp;fell nearly 40%, to about 11 GW, in the second quarter from 18 GW at the end of last year, the Chicago-based utility company said Thursday. The decline…",
+      "score": 38,
+      "matched": [
+        "der",
+        "virtual power plant",
+        "vpp",
+        "interconnection"
+      ]
+    },
+    {
+      "title": "Veolia to operate 350MW microgrid for AI data centre in central Ohio",
+      "link": "https://www.energy-storage.news/veolia-to-operate-350mw-microgrid-for-ai-data-centre-in-central-ohio/",
+      "source": "Energy-Storage.News",
+      "topic": "storage",
+      "date": "2026-07-31T11:43:43.000Z",
+      "excerpt": "Environmental services company Veolia has been selected to operate and maintain a 350MW microgrid to power an AI data centre campus in New Albany, Ohio, US, which includes a 430MWh BESS.",
+      "score": 26,
+      "matched": [
+        "microgrid",
+        "grid",
+        "data centre"
+      ]
+    },
+    {
+      "title": "The PJM grid’s largest battery is now under construction in Ohio",
+      "link": "https://electrek.co/2026/07/30/pjm-grid-largest-battery-is-now-under-construction-in-ohio/",
+      "source": "Electrek",
+      "topic": "electrification",
+      "date": "2026-07-30T22:55:14.000Z",
+      "excerpt": "A giant 1 GWh battery is now under construction outside Columbus, Ohio, where data center and industrial development is rapidly pushing up electricity demand.",
+      "score": 15,
+      "matched": [
+        "der",
+        "grid",
+        "data center"
+      ]
+    }
+  ]
+}
