@@ -1,0 +1,50 @@
+---
+import '../styles/global.css';
+import { SITE } from '../consts.js';
+
+const { title, description = SITE.description, ogType = 'website' } = Astro.props;
+const pageTitle = title ? `${title} — ${SITE.title}` : SITE.title;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!--
+      Feed autodiscovery. This single tag is what Canva made impossible — it is
+      how readers (and Slack, and podcast-style aggregators) find the feed
+      automatically from any page on the site.
+    -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${SITE.title} — The Gridline`}
+      href={new URL('feed.xml', Astro.site)}
+    />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:site_name" content={SITE.title} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <slot />
+  </body>
+</html>
