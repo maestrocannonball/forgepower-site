@@ -13,8 +13,16 @@
 */
 
 :root {
+  /*
+    Three greens, because one cannot do all three jobs accessibly:
+      --green      the brand mark. Vivid, but only 1.37:1 on white — fills and
+                   dark surfaces ONLY, never text on light.
+      --green-deep UI accents on light backgrounds (3.44:1 — large text/borders).
+      --green-text body and heading text on white. 4.53:1, clears WCAG AA.
+  */
   --green: #00ff15;
-  --green-deep: #00c410;
+  --green-deep: #00a10d;
+  --green-text: #008a0b;
   --ink: #141512;
   --ink-soft: #4a4d47;
   --surface: #eef0f0;
@@ -110,12 +118,12 @@ img {
 }
 
 .accent {
-  color: var(--green-deep);
+  color: var(--green-text);
 }
 
 /* Focus visibility — the Canva export handled this poorly; do it properly. */
 :focus-visible {
-  outline: 3px solid var(--green-deep);
+  outline: 3px solid var(--green-text);
   outline-offset: 3px;
   border-radius: 2px;
 }
