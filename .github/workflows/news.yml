@@ -1,0 +1,44 @@
+name: Refresh industry news
+
+on:
+  schedule:
+    - cron: '0 6,18 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: news-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Fetch sources
+        working-directory: feed
+        run: node fetch-news.mjs
+
+      - name: Verify the site still builds
+        working-directory: feed
+        run: node build.mjs
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- feed/news.json; then
+            echo "No change in news.json — nothing to commit."
+            exit 0
+          fi
+          git config user.name  "forge-news-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add feed/news.json
+          COUNT=$(node -e "console.log(require('./feed/news.json').count)")
+          git commit -m "Refresh industry news (${COUNT} items)"
+          git push
