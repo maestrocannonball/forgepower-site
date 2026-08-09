@@ -11,7 +11,7 @@
  * and every dependency is a future build failure.
  */
 
-import { readFileSync, readdirSync, mkdirSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync, mkdirSync, writeFileSync, existsSync, copyFileSync, rmSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -144,6 +144,9 @@ for (const e of entries) {
 
 /* ---------- emit ---------- */
 
+// Clean first. Otherwise a page that was published in an earlier build — an
+// article since set back to draft, say — lingers in dist and can be deployed.
+rmSync(OUT, { recursive: true, force: true });
 mkdirSync(OUT, { recursive: true });
 
 const rfc822 = (d) => d.toUTCString();
@@ -190,9 +193,9 @@ if (existsSync(NEWS_FILE)) {
   }
 }
 
-const newsCard = (n) => `<article>
+const newsCard = (n) => `<article class="entry">
   <p class="meta"><time datetime="${n.date}">${human(new Date(n.date))}</time>
-  <span class="tag">${htmlEscape(n.source)}</span></p>
+  <span class="tag tag-x">${htmlEscape(n.source)}</span></p>
   <h2><a href="${htmlEscape(n.link)}" target="_blank" rel="noopener noreferrer">${htmlEscape(n.title)}</a></h2>
   <p>${htmlEscape(n.excerpt)}</p>
 </article>`;
@@ -202,48 +205,125 @@ const page = (title, inner, extraHead = '') => `<!doctype html>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${htmlEscape(title)}</title>
 <link rel="alternate" type="application/rss+xml" title="${htmlEscape(SITE.title)}" href="${SITE.origin}/feed.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&display=swap" rel="stylesheet">
 ${extraHead}
 <style>
-:root{--ink:#141512;--soft:#4a4d47;--rule:#d9dcdc;--green:#008a0b}
-*{box-sizing:border-box}
-body{margin:0;background:#fff;color:var(--ink);
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-line-height:1.6;font-size:17px}
-.wrap{width:min(100% - 2.5rem,44rem);margin:0 auto;padding:3.5rem 0 5rem}
-a{color:var(--green)}
-h1{font-size:2rem;letter-spacing:-.02em;margin:0 0 .4rem}
-.sub{color:var(--soft);margin:0 0 2.5rem}
-article{padding:1.6rem 0;border-top:1px solid var(--rule)}
-article h2{font-size:1.2rem;margin:.2rem 0 .4rem;line-height:1.3}
-article h2 a{color:inherit;text-decoration:none}
-article h2 a:hover{text-decoration:underline}
-article p{margin:0;color:var(--soft)}
-h2.section{font-size:1.5rem;margin:3.5rem 0 .4rem;padding-top:2.5rem;border-top:3px solid var(--ink)}
-.more{margin-top:1.5rem;font-weight:600}
-.meta{font-size:.82rem;color:var(--soft);display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
-.tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;
-padding:.1rem .45rem;border-radius:999px;border:1px solid var(--rule);color:var(--soft)}
-.tag-f{background:var(--ink);color:#fff;border-color:var(--ink)}
-footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--rule);
-font-size:.85rem;color:var(--soft)}
-.body h2{font-size:1.35rem;margin:2rem 0 .6rem}
+/*
+  Forge Power visual identity.
+  Ground #000b0d (near-black, teal cast) · teal #13b8a7 (structure) ·
+  amber #f49e0b (emphasis) · electric green #00ff15 (ONE spot use, live signal).
+  Roboto is the brand's designated substitute for Aktiv Grotesk.
+  Typesetting: mixed case, flush left, ragged, no hyphenation, tight kerning.
+*/
+:root{
+  --ground:#000b0d; --ground-2:#001216; --ink:#ffffff;
+  --teal:#13b8a7; --amber:#f49e0b; --navy:#0b2138; --live:#00ff15;
+  --muted:#8fa0a2; --rule:rgba(255,255,255,.13);
+  --measure:68ch;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--ground); color:var(--ink);
+  font-family:'Roboto',Helvetica,Arial,sans-serif;
+  font-size:18px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  hyphens:none; text-align:left;
+}
+::selection{background:var(--teal);color:var(--ground)}
+.wrap{width:min(100% - 3rem, 46rem);margin:0 auto;padding:0 0 6rem}
+
+/* masthead */
+header.mast{border-bottom:1px solid var(--rule);margin-bottom:3.5rem}
+.mast-in{width:min(100% - 3rem, 46rem);margin:0 auto;padding:1.6rem 0;
+  display:flex;align-items:center;justify-content:space-between;gap:1.5rem}
+.mast img{width:132px;height:auto;display:block}
+.mast a{text-decoration:none;color:inherit}
+.sub-link{display:inline-flex;align-items:center;gap:.55rem;
+  font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--teal);border:1px solid rgba(19,184,167,.4);border-radius:999px;
+  padding:.45rem .9rem;white-space:nowrap}
+.sub-link:hover{background:rgba(19,184,167,.1)}
+/* the single electric-green instance on the page: a live signal */
+.dot{width:7px;height:7px;border-radius:50%;background:var(--live);flex:0 0 auto}
+
+h1{font-size:clamp(2.1rem,1.4rem+2.6vw,3.1rem);line-height:1.04;
+  font-weight:700;letter-spacing:-.035em;text-wrap:balance}
+h2{font-weight:700;letter-spacing:-.025em;line-height:1.15}
+p{margin:0 0 1.15em;text-wrap:pretty}
+a{color:var(--teal)}
+strong{font-weight:700}
+
+.kicker{font-size:.78rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--teal);margin:0 0 1rem}
+.lede{font-size:1.22rem;line-height:1.5;color:#c9d5d6;max-width:var(--measure);
+  margin:1.1rem 0 0}
+.meta{font-size:.85rem;color:var(--muted);display:flex;gap:.7rem;align-items:center;
+  flex-wrap:wrap;margin:0 0 .5rem}
+
+/* index list — poster scale, flush left, generous space */
+article.entry{padding:2.2rem 0;border-top:1px solid var(--rule)}
+article.entry:first-of-type{border-top:2px solid var(--teal)}
+article.entry h2{font-size:clamp(1.35rem,1.1rem+1vw,1.75rem);margin:.15rem 0 .5rem;
+  max-width:32ch}
+article.entry h2 a{color:var(--ink);text-decoration:none}
+article.entry h2 a:hover{color:var(--teal)}
+article.entry p{margin:0;color:var(--muted);max-width:var(--measure)}
+.tag{font-size:.62rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;
+  padding:.18rem .5rem;border-radius:999px;border:1px solid var(--rule);color:var(--muted)}
+.tag-f{background:var(--amber);color:var(--ground);border-color:var(--amber)}
+.tag-x{border-color:rgba(19,184,167,.45);color:var(--teal)}
+
+/* section break */
+h2.section{font-size:clamp(1.6rem,1.2rem+1.4vw,2.1rem);margin:4.5rem 0 .5rem;
+  padding-top:2.6rem;border-top:3px solid var(--amber)}
+.section-note{color:var(--muted);max-width:var(--measure);margin:0 0 1.5rem}
+.more{margin-top:2rem;font-weight:700}
+.more a{text-decoration:none}
+.more a:hover{text-decoration:underline}
+
+/* article body */
+.body{max-width:var(--measure)}
+.body h2{font-size:1.45rem;margin:2.6rem 0 .8rem}
+.body p{margin:0 0 1.25em}
+.body a{color:var(--teal)}
+.back{margin-top:4rem;padding-top:1.5rem;border-top:1px solid var(--rule);font-weight:700}
+.back a{text-decoration:none}
+.back a:hover{text-decoration:underline}
+
+footer{margin-top:5rem;padding-top:1.6rem;border-top:1px solid var(--rule);
+  font-size:.85rem;color:var(--muted)}
+footer a{color:var(--muted)}
+footer a:hover{color:var(--teal)}
+
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style></head>
-<body><div class="wrap">${inner}</div></body></html>
+<body>
+<header class="mast"><div class="mast-in">
+  <a href="/" aria-label="Forge Power"><img src="/logo.png" alt="Forge Power"></a>
+  <a class="sub-link" href="/feed.xml"><span class="dot"></span>Subscribe</a>
+</div></header>
+<div class="wrap">${inner}</div>
+</body></html>
 `;
 
 writeFileSync(
   join(OUT, 'index.html'),
   page(
     SITE.title,
-    `<h1>The Gridline</h1>
-<p class="sub">${htmlEscape(SITE.description)}
-<br><a href="/feed.xml">Subscribe via RSS</a> · <a href="${SITE.homepage}">forgepower.ai</a></p>
+    `<p class="kicker">Forge Power</p>
+<h1>The Gridline</h1>
+<p class="lede">${htmlEscape(SITE.description)}</p>
+<p class="meta" style="margin-top:1.4rem"><a href="${SITE.homepage}">forgepower.ai</a></p>
+
 ${entries
   .map(
-    (e) => `<article>
+    (e) => `<article class="entry">
   <p class="meta"><time datetime="${e.date.toISOString()}">${human(e.date)}</time>
   ${e.featured ? '<span class="tag tag-f">Featured</span>' : ''}
-  ${e.external ? '<span class="tag">LinkedIn</span>' : ''}</p>
+  ${e.external ? '<span class="tag tag-x">LinkedIn</span>' : ''}</p>
   <h2><a href="${htmlEscape(e.link)}"${e.external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${htmlEscape(e.title)}</a></h2>
   <p>${htmlEscape(e.description)}</p>
 </article>`
@@ -252,9 +332,10 @@ ${entries
 ${
   news.length
     ? `<h2 class="section">Energy &amp; Frontier Tech</h2>
-<p class="sub">Industry headlines we're tracking — energy, micro-grids, edge compute, data
-centers, quantum, geothermal, nuclear and next-generation fuels.
-<br><a href="/news/">See all ${news.length}</a> · <a href="/news.xml">Subscribe via RSS</a></p>
+<p class="section-note">Headlines we're tracking across energy, micro-grids, edge compute, data
+centers, quantum, geothermal, nuclear and next-generation fuels. Every item links to its
+original publisher.</p>
+<p class="meta"><a href="/news/">All ${news.length} items</a> · <a href="/news.xml">Subscribe</a></p>
 ${news.slice(0, 8).map(newsCard).join('\n')}
 <p class="more"><a href="/news/">More industry news →</a></p>`
     : ''
@@ -262,6 +343,9 @@ ${news.slice(0, 8).map(newsCard).join('\n')}
 <footer>© ${new Date().getFullYear()} Forge Power · <a href="mailto:${SITE.email}">${SITE.email}</a></footer>`
   )
 );
+
+// The wordmark is a real brand asset, never type set to imitate it.
+copyFileSync(join(ROOT, 'assets', 'logo.png'), join(OUT, 'logo.png'));
 
 // Cloudflare Pages reads this. Without it feed.xml is served as text/xml and
 // some readers are fussy; the short cache keeps new posts surfacing quickly.
@@ -317,11 +401,11 @@ ${news
     join(OUT, 'news', 'index.html'),
     page(
       'Energy & Frontier Tech — curated by Forge Power',
-      `<p class="meta"><a href="/">← The Gridline</a></p>
+      `<p class="kicker"><a href="/" style="color:inherit;text-decoration:none">← The Gridline</a></p>
 <h1>Energy &amp; Frontier Tech</h1>
-<p class="sub">Headlines across energy, micro-grids, edge compute, data centers, quantum,
-geothermal, nuclear and next-generation fuels. Every item links to its original publisher.
-<br><a href="/news.xml">Subscribe via RSS</a></p>
+<p class="lede">Headlines across energy, micro-grids, edge compute, data centers, quantum,
+geothermal, nuclear and next-generation fuels. Every item links to its original publisher.</p>
+<p class="meta" style="margin-top:1.4rem"><a href="/news.xml">Subscribe to this feed</a></p>
 ${news.map(newsCard).join('\n')}
 <footer>Curated automatically from ${new Set(news.map((n) => n.source)).size} industry
 sources. Headlines and excerpts remain the property of their publishers.</footer>`
@@ -339,10 +423,12 @@ for (const e of entries) {
     join(dir, 'index.html'),
     page(
       `${e.title} — The Gridline`,
-      `<p class="meta"><a href="/">← The Gridline</a></p>
+      `<p class="kicker"><a href="/" style="color:inherit;text-decoration:none">← The Gridline</a></p>
 <h1>${htmlEscape(e.title)}</h1>
-<p class="sub"><time datetime="${e.date.toISOString()}">${human(e.date)}</time></p>
+<p class="lede">${htmlEscape(e.description)}</p>
+<p class="meta" style="margin:1.6rem 0 2.6rem;padding-bottom:1.4rem;border-bottom:1px solid var(--rule)"><time datetime="${e.date.toISOString()}">${human(e.date)}</time></p>
 <div class="body">${e.bodyHtml || `<p>${htmlEscape(e.description)}</p>`}</div>
+<p class="back"><a href="/">← All Gridline writing</a></p>
 <footer><a href="${SITE.homepage}">forgepower.ai</a> · <a href="/feed.xml">RSS</a></footer>`,
       `<meta name="description" content="${htmlEscape(e.description)}">`
     )
