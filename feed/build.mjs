@@ -298,6 +298,66 @@ footer a{color:var(--muted)}
 footer a:hover{color:var(--teal)}
 
 :focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+
+/* ============================================================
+   POSTER LAYER — index only
+   Blue Note covers were silkscreened. The honest motion is
+   registration: color plates converging into alignment. Slow,
+   deliberate, once. Nothing loops except the live signal.
+   ============================================================ */
+
+/* masthead plate — three offset impressions snapping into register */
+.hero{padding:1rem 0 3.5rem}
+.plate{position:relative;display:block;font-weight:900;
+  font-size:clamp(3.2rem,2rem+7vw,6.4rem);line-height:.88;letter-spacing:-.05em;
+  margin:0 0 1.6rem}
+.plate span{display:block}
+.plate .ink{position:relative;color:var(--ink);z-index:3}
+.plate .t,.plate .a{position:absolute;inset:0;z-index:1}
+.plate .t{color:var(--teal);animation:reg-t 1100ms cubic-bezier(.16,1,.3,1) both}
+.plate .a{color:var(--amber);animation:reg-a 1100ms cubic-bezier(.16,1,.3,1) both}
+@keyframes reg-t{from{transform:translate3d(-14px,7px,0);opacity:.9}
+                 to{transform:translate3d(0,0,0);opacity:.34}}
+@keyframes reg-a{from{transform:translate3d(13px,-8px,0);opacity:.9}
+                 to{transform:translate3d(0,0,0);opacity:.30}}
+
+/* the rule draws like a plotter pass */
+.draw{height:2px;background:var(--teal);transform-origin:left center;
+  animation:draw 900ms 250ms cubic-bezier(.16,1,.3,1) both}
+@keyframes draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* entries rise into place, staggered, once */
+.reveal{opacity:0;transform:translate3d(0,14px,0)}
+.reveal.in{opacity:1;transform:none;
+  transition:opacity 700ms cubic-bezier(.16,1,.3,1),transform 700ms cubic-bezier(.16,1,.3,1)}
+
+/* hero entry — poster scale for the newest piece */
+article.entry.lead h2{font-size:clamp(2rem,1.3rem+3vw,3.2rem);letter-spacing:-.04em;
+  line-height:1.02;max-width:20ch}
+article.entry.lead{padding-top:2.8rem}
+
+/* hover: an amber rule extends, the way a plate edge catches */
+article.entry{position:relative}
+article.entry::before{content:"";position:absolute;left:-1.4rem;top:2.4rem;
+  width:0;height:2px;background:var(--amber);transition:width 320ms cubic-bezier(.16,1,.3,1)}
+article.entry:hover::before{width:.9rem}
+article.entry h2 a{transition:color 220ms ease}
+
+/* live signal — the only looping motion on the page */
+.dot{animation:pulse 2.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.82)}}
+
+/* hairline reading progress */
+.prog{position:fixed;top:0;left:0;height:2px;width:100%;transform:scaleX(0);
+  transform-origin:left;background:var(--teal);opacity:.55;z-index:50}
+
+@media (prefers-reduced-motion:reduce){
+  .plate .t,.plate .a,.draw,.dot{animation:none}
+  .plate .t{opacity:.34}.plate .a{opacity:.30}
+  .draw{transform:none}
+  .reveal{opacity:1;transform:none}
+  .prog{display:none}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style></head>
 <body>
@@ -305,7 +365,33 @@ footer a:hover{color:var(--teal)}
   <a href="/" aria-label="Forge Power"><img src="/logo.png" alt="Forge Power"></a>
   <a class="sub-link" href="/feed.xml"><span class="dot"></span>Subscribe</a>
 </div></header>
+<div class="prog" id="prog"></div>
 <div class="wrap">${inner}</div>
+<script>
+(function(){
+  var p=document.getElementById('prog');
+  if(p) addEventListener('scroll',function(){
+    var h=document.documentElement,
+        d=(h.scrollHeight-h.clientHeight)||1;
+    p.style.transform='scaleX('+Math.min(1,h.scrollTop/d)+')';
+  },{passive:true});
+
+  var els=[].slice.call(document.querySelectorAll('.reveal'));
+  if(!els.length) return;
+  if(!('IntersectionObserver' in window)){
+    els.forEach(function(e){e.classList.add('in')}); return;
+  }
+  var io=new IntersectionObserver(function(rows){
+    rows.forEach(function(r){
+      if(!r.isIntersecting) return;
+      var i=+(r.target.dataset.i||0);
+      setTimeout(function(){r.target.classList.add('in')}, Math.min(i,6)*90);
+      io.unobserve(r.target);
+    });
+  },{rootMargin:'0px 0px -8% 0px',threshold:.08});
+  els.forEach(function(e){io.observe(e)});
+})();
+</script>
 </body></html>
 `;
 
@@ -313,14 +399,21 @@ writeFileSync(
   join(OUT, 'index.html'),
   page(
     SITE.title,
-    `<p class="kicker">Forge Power</p>
-<h1>The Gridline</h1>
-<p class="lede">${htmlEscape(SITE.description)}</p>
-<p class="meta" style="margin-top:1.4rem"><a href="${SITE.homepage}">forgepower.ai</a></p>
+    `<section class="hero">
+  <p class="kicker">Forge Power</p>
+  <h1 class="plate" aria-label="The Gridline">
+    <span class="t" aria-hidden="true">The Gridline</span>
+    <span class="a" aria-hidden="true">The Gridline</span>
+    <span class="ink">The Gridline</span>
+  </h1>
+  <div class="draw"></div>
+  <p class="lede" style="margin-top:1.6rem">${htmlEscape(SITE.description)}</p>
+  <p class="meta" style="margin-top:1.4rem"><a href="${SITE.homepage}">forgepower.ai</a></p>
+</section>
 
 ${entries
   .map(
-    (e) => `<article class="entry">
+    (e, i) => `<article class="entry reveal${i === 0 ? ' lead' : ''}" data-i="${i}">
   <p class="meta"><time datetime="${e.date.toISOString()}">${human(e.date)}</time>
   ${e.featured ? '<span class="tag tag-f">Featured</span>' : ''}
   ${e.external ? '<span class="tag tag-x">LinkedIn</span>' : ''}</p>
@@ -331,13 +424,16 @@ ${entries
   .join('\n')}
 ${
   news.length
-    ? `<h2 class="section">Energy &amp; Frontier Tech</h2>
-<p class="section-note">Headlines we're tracking across energy, micro-grids, edge compute, data
-centers, quantum, geothermal, nuclear and next-generation fuels. Every item links to its
-original publisher.</p>
-<p class="meta"><a href="/news/">All ${news.length} items</a> · <a href="/news.xml">Subscribe</a></p>
-${news.slice(0, 8).map(newsCard).join('\n')}
-<p class="more"><a href="/news/">More industry news →</a></p>`
+    ? `<h2 class="section reveal" data-i="0">Energy &amp; Frontier Tech</h2>
+<p class="section-note reveal" data-i="1">Headlines we're tracking across energy, micro-grids, edge
+compute, data centers, quantum, geothermal, nuclear and next-generation fuels. Every item links
+to its original publisher.</p>
+<p class="meta reveal" data-i="1"><a href="/news/">All ${news.length} items</a> · <a href="/news.xml">Subscribe</a></p>
+${news
+  .slice(0, 8)
+  .map((n, i) => newsCard(n).replace('<article class="entry">', `<article class="entry reveal" data-i="${i}">`))
+  .join('\n')}
+<p class="more reveal" data-i="0"><a href="/news/">More industry news →</a></p>`
     : ''
 }
 <footer>© ${new Date().getFullYear()} Forge Power · <a href="mailto:${SITE.email}">${SITE.email}</a></footer>`
@@ -406,7 +502,7 @@ ${news
 <p class="lede">Headlines across energy, micro-grids, edge compute, data centers, quantum,
 geothermal, nuclear and next-generation fuels. Every item links to its original publisher.</p>
 <p class="meta" style="margin-top:1.4rem"><a href="/news.xml">Subscribe to this feed</a></p>
-${news.map(newsCard).join('\n')}
+${news.map((n, i) => newsCard(n).replace('<article class="entry">', `<article class="entry reveal" data-i="${i % 7}">`)).join('\n')}
 <footer>Curated automatically from ${new Set(news.map((n) => n.source)).size} industry
 sources. Headlines and excerpts remain the property of their publishers.</footer>`
     )
