@@ -3,6 +3,9 @@ title: 'Blackout in Iberia: A Wake-Up Call for Grid Resilience and Energy Sovere
 description: 'An unprecedented grid failure that exposes the fragility of centralized power systems and underscores the need for distributed micro-grids.'
 # TODO: confirm the real publication date. The event described occurred 2025-04-28.
 pubDate: 2025-05-05
+fig: cascade
+figLabelA: 'One failure'
+figLabelB: 'Then the next'
 ---
 
 On April 28, 2025, the Iberian Peninsula experienced a massive power outage that

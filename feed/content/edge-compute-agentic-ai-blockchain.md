@@ -4,6 +4,7 @@ description: 'A look at how three emerging forces are converging to redefine how
 # TODO: replace with the real publication date — the Canva site did not expose one.
 pubDate: 2025-06-01
 featured: true
+fig: plates
 ---
 
 I believe we're living in a moment where three powerful forces are coming

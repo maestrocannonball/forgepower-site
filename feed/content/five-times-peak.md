@@ -4,7 +4,7 @@ description: 'Texas paused data center interconnections and the market lurched. 
 pubDate: 2026-08-08
 featured: true
 draft: true
-fig: ratio
+fig: grid
 figA: 91.3
 figB: 474
 figLabelA: 'Record peak demand'

@@ -36,6 +36,22 @@ const xmlEscape = (s = '') =>
 
 const htmlEscape = xmlEscape;
 
+
+/**
+ * Widow control. A line of text should never end with a word stranded alone.
+ * Binds the last N words with non-breaking spaces so they wrap together.
+ * Body copy holds three; headings hold two, since large type fits fewer words
+ * per line and over-binding causes overflow.
+ */
+function noWidow(str = '', hold = 3) {
+  const words = String(str).trim().split(/\s+/);
+  if (words.length <= 7) return str;          // short lines cannot orphan badly
+  const n = Math.min(hold, words.length - 1);
+  const head = words.slice(0, words.length - n).join(' ');
+  const tail = words.slice(words.length - n).join('\u00A0');
+  return `${head} ${tail}`;
+}
+
 /** Frontmatter: `key: value` lines between --- fences. Quotes optional. */
 function parseFrontmatter(raw, file) {
   const m = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
@@ -95,10 +111,10 @@ function markdown(src) {
     const h = t.match(/^(#{2,4})\s+(.*)$/);
     if (h) {
       const lvl = h[1].length;
-      out.push(`<h${lvl}>${inline(h[2])}</h${lvl}>`);
+      out.push(`<h${lvl}>${noWidow(inline(h[2]), 2)}</h${lvl}>`);
       continue;
     }
-    out.push(`<p>${inline(t.replace(/\r?\n/g, ' '))}</p>`);
+    out.push(`<p>${noWidow(inline(t.replace(/\r?\n/g, ' ')))}</p>`);
   }
   closeList();
   return out.join('\n');
@@ -208,68 +224,94 @@ if (existsSync(NEWS_FILE)) {
    brand's registration motif where it does not.
    ============================================================ */
 
-const FIG_W = 1200;
-const FIG_H = 520;
+/* Aspect varies by module so the page has vertical rhythm rather than a
+   uniform band down the page. Hero is wide and cinematic; splits are taller
+   and denser, which is what makes the spread read as a magazine. */
+const FIG_SIZE = { hero: [1200, 560], split: [900, 720] };
 
-function figRatio(e) {
+function figRatio(e, W, H) {
   const a = e.figA ?? 1, b = e.figB ?? 1;
   const max = Math.max(a, b);
-  const aw = Math.round((a / max) * 940);
-  const bw = Math.round((b / max) * 940);
+  const aw = Math.round((a / max) * (W - 40));
+  const bw = Math.round((b / max) * (W - 40));
+  const midY = H * 0.34, botY = H * 0.72;
   return `
-  <rect class="f-bar f-teal" x="0" y="150" width="${aw}" height="86" style="--w:${aw}"/>
-  <text class="f-num f-t" x="0" y="128">${a}${e.figUnit}</text>
-  <text class="f-lab f-t" x="0" y="266">${htmlEscape(e.figLabelA)}</text>
-  <rect class="f-bar f-amber" x="0" y="330" width="${bw}" height="120" style="--w:${bw}"/>
-  <text class="f-num f-a" x="0" y="312">${b}${e.figUnit}</text>
-  <text class="f-lab f-a" x="0" y="482">${htmlEscape(e.figLabelB)}</text>`;
+  <text class="f-num f-t" x="0" y="${midY - 26}">${a}${e.figUnit}</text>
+  <rect class="f-bar f-teal" x="0" y="${midY}" width="${aw}" height="${H * 0.09}"/>
+  <text class="f-lab f-t" x="0" y="${midY + H * 0.09 + 34}">${htmlEscape(e.figLabelA)}</text>
+  <text class="f-num f-a" x="0" y="${botY - 26}">${b}${e.figUnit}</text>
+  <rect class="f-bar f-amber" x="0" y="${botY}" width="${bw}" height="${H * 0.15}"/>
+  <text class="f-lab f-a" x="0" y="${botY + H * 0.15 + 34}">${htmlEscape(e.figLabelB)}</text>`;
 }
 
-function figGrid(e) {
-  const cols = 40, rows = 12, total = cols * rows;
+function figGrid(e, W, H) {
+  const cols = W > 1000 ? 40 : 26;
+  const rows = W > 1000 ? 12 : 20;
+  const total = cols * rows;
   const share = e.figA && e.figB ? e.figA / e.figB : 0.19;
   const on = Math.round(total * share);
-  const cw = 1200 / cols, ch = 34;
+  const cw = W / cols, ch = H / rows;
   let out = '';
   for (let i = 0; i < total; i++) {
     const x = (i % cols) * cw, y = Math.floor(i / cols) * ch;
     const cls = i < on ? 'f-cell f-on' : 'f-cell f-off';
-    out += `<rect class="${cls}" x="${x.toFixed(1)}" y="${y}" width="${(cw - 6).toFixed(1)}" height="${ch - 6}" style="--d:${(i % cols) * 6 + Math.floor(i / cols) * 18}ms"/>`;
+    out += `<rect class="${cls}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${(cw - 6).toFixed(1)}" height="${(ch - 6).toFixed(1)}" style="--d:${(i % cols) * 6 + Math.floor(i / cols) * 18}ms"/>`;
   }
   return out;
 }
 
-function figStack(e) {
+function figStack(e, W, H) {
   const ratio = e.figA && e.figB ? e.figB / e.figA : 5.19;
   const full = Math.floor(ratio), frac = ratio - full;
-  const bh = 74, gap = 12;
-  let out = `<rect class="f-bar f-teal" x="0" y="${FIG_H - bh}" width="260" height="${bh}" style="--w:260"/>
-  <text class="f-lab f-t" x="0" y="${FIG_H - bh - 18}">${htmlEscape(e.figLabelA)}</text>`;
+  const gap = 10;
+  const bh = (H - 90 - full * gap) / (full + 1.4);
+  const lw = W * 0.26, rw = W * 0.5, rx = W * 0.36;
+  let out = `<rect class="f-bar f-teal" x="0" y="${H - bh}" width="${lw}" height="${bh}"/>
+  <text class="f-lab f-t" x="0" y="${H - bh - 18}">${htmlEscape(e.figLabelA)}</text>`;
   for (let i = 0; i < full; i++) {
-    const y = FIG_H - (i + 1) * (bh + gap);
-    out += `<rect class="f-bar f-amber" x="340" y="${y}" width="620" height="${bh}" style="--w:620;--d:${i * 70}ms"/>`;
+    const y = H - (i + 1) * (bh + gap);
+    out += `<rect class="f-bar f-amber" x="${rx}" y="${y}" width="${rw}" height="${bh}" style="--d:${i * 80}ms"/>`;
   }
-  const py = FIG_H - (full + 1) * (bh + gap);
-  out += `<rect class="f-bar f-amber f-part" x="340" y="${py + bh - bh * frac}" width="620" height="${Math.round(bh * frac)}" style="--w:620;--d:${full * 70}ms"/>`;
-  out += `<text class="f-lab f-a" x="340" y="${py - 18}">${htmlEscape(e.figLabelB)}</text>`;
+  const py = H - (full + 1) * (bh + gap);
+  out += `<rect class="f-bar f-amber" x="${rx}" y="${py + bh - bh * frac}" width="${rw}" height="${Math.round(bh * frac)}" style="--d:${full * 80}ms"/>`;
+  out += `<text class="f-lab f-a" x="${rx}" y="${py - 18}">${htmlEscape(e.figLabelB)}</text>`;
   return out;
 }
 
-function figPlates() {
+function figPlates(e, W, H) {
   // The registration motif: three impressions converging into alignment.
+  const w = W * 0.54, h = H * 0.56;
   return `
-  <rect class="f-plate f-p1" x="120" y="90"  width="640" height="340"/>
-  <rect class="f-plate f-p2" x="200" y="130" width="640" height="340"/>
-  <rect class="f-plate f-p3" x="160" y="110" width="640" height="340"/>`;
+  <rect class="f-plate f-p1" x="${W * 0.10}" y="${H * 0.16}" width="${w}" height="${h}"/>
+  <rect class="f-plate f-p2" x="${W * 0.26}" y="${H * 0.28}" width="${w}" height="${h}"/>
+  <rect class="f-plate f-p3" x="${W * 0.18}" y="${H * 0.22}" width="${w}" height="${h}"/>`;
 }
 
-function figure(e) {
+
+/* Cascade — one failure propagating. Built for the Iberia piece: a row of
+   healthy cells going dark left to right, which is what a cascading grid
+   failure actually looks like as a sequence. */
+function figCascade(e, W, H) {
+  const cols = 9, rows = 5, total = cols * rows;
+  const cw = W / cols, ch = H / rows;
+  let out = '';
+  for (let i = 0; i < total; i++) {
+    const c = i % cols, r = Math.floor(i / cols);
+    const dark = c + r * 0.6 > 3.2;           // the wavefront
+    out += `<rect class="f-cell ${dark ? 'f-dark' : 'f-live'}" x="${(c * cw).toFixed(1)}" y="${(r * ch).toFixed(1)}" width="${(cw - 10).toFixed(1)}" height="${(ch - 10).toFixed(1)}" style="--d:${Math.round((c + r * 0.6) * 55)}ms"/>`;
+  }
+  return out;
+}
+
+function figure(e, variant = 'hero') {
+  const [W, H] = FIG_SIZE[variant] || FIG_SIZE.hero;
   const body =
-    e.fig === 'ratio' ? figRatio(e)
-    : e.fig === 'grid' ? figGrid(e)
-    : e.fig === 'stack' ? figStack(e)
-    : figPlates();
-  return `<svg class="fig fig-${e.fig}" viewBox="0 0 ${FIG_W} ${FIG_H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${htmlEscape(e.title)}">${body}</svg>`;
+    e.fig === 'ratio' ? figRatio(e, W, H)
+    : e.fig === 'grid' ? figGrid(e, W, H)
+    : e.fig === 'stack' ? figStack(e, W, H)
+    : e.fig === 'cascade' ? figCascade(e, W, H)
+    : figPlates(e, W, H);
+  return `<svg class="fig fig-${e.fig} fig-${variant}" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${htmlEscape(e.title)}">${body}</svg>`;
 }
 
 const bySource = [...news.reduce((m, n) => m.set(n.source, (m.get(n.source) || 0) + 1), new Map())]
@@ -433,7 +475,11 @@ footer a:hover{color:var(--teal)}
 }
 .mod-a .figwrap,.mod-b .figwrap{margin:0}
 .mod-a h2,.mod-b h2{font-size:clamp(1.3rem,1.05rem+.9vw,1.7rem);max-width:22ch}
-.mod-a .fig,.mod-b .fig{padding:1.6rem 1.8rem}
+.mod-a .fig,.mod-b .fig{padding:1.8rem 2rem}
+.mod-lead .figwrap{aspect-ratio:12/5}
+.mod-a .figwrap,.mod-b .figwrap{aspect-ratio:5/4}
+.figwrap{display:flex;align-items:center}
+.fig{margin:auto}
 .modtext p{max-width:46ch}
 
 /* dense — the news register, deliberately different in texture */
@@ -476,6 +522,7 @@ footer a:hover{color:var(--teal)}
 
 .f-cell{transition:opacity var(--dur-comp) var(--ease-out);transition-delay:var(--d,0ms);opacity:0}
 .entry.in .f-cell,.fig.in .f-cell{opacity:1}
+.f-live{fill:var(--teal)} .f-dark{fill:rgba(19,184,167,.10);stroke:rgba(19,184,167,.28);stroke-width:1.5}
 .f-on{fill:var(--amber)} .f-off{fill:rgba(19,184,167,.22);stroke:rgba(19,184,167,.5);stroke-width:1.5}
 
 .f-plate{opacity:0}
@@ -628,7 +675,7 @@ writeFileSync(
     <span class="ink">The Gridline</span>
   </h1>
   <div class="draw"></div>
-  <p class="lede measure" style="margin-top:1.6rem">${htmlEscape(SITE.description)}</p>
+  <p class="lede measure" style="margin-top:1.6rem">${noWidow(htmlEscape(SITE.description))}</p>
   <p class="meta" style="margin-top:1.2rem"><a href="${SITE.homepage}">forgepower.ai</a></p>
 </section>
 
@@ -637,14 +684,15 @@ ${entries
   .map((e, i) => {
     // Module rhythm: lead, then alternating split and mirrored split.
     const mod = i === 0 ? 'mod-lead' : i % 2 === 1 ? 'mod-a' : 'mod-b';
+    const variant = i === 0 ? 'hero' : 'split';
     return `<article class="mod ${mod} entry reveal" data-i="${i}">
-  <a class="figwrap" href="${htmlEscape(e.link)}"${e.external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${figure(e)}</a>
+  <a class="figwrap" href="${htmlEscape(e.link)}"${e.external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${figure(e, variant)}</a>
   <div class="modtext">
     <p class="meta"><time datetime="${e.date.toISOString()}">${human(e.date)}</time>
     ${e.featured ? '<span class="tag tag-f">Featured</span>' : ''}
     ${e.external ? '<span class="tag tag-x">LinkedIn</span>' : ''}</p>
-    <h2><a href="${htmlEscape(e.link)}"${e.external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${htmlEscape(e.title)}</a></h2>
-    <p>${htmlEscape(e.description)}</p>
+    <h2><a href="${htmlEscape(e.link)}"${e.external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${noWidow(htmlEscape(e.title), 2)}</a></h2>
+    <p>${noWidow(htmlEscape(e.description))}</p>
   </div>
 </article>`;
   })
@@ -664,8 +712,8 @@ ${news
     (n, i) => `  <article class="reveal" data-i="${i % 7}">
     <p class="meta"><time datetime="${n.date}">${human(new Date(n.date))}</time>
     <span class="tag tag-x">${htmlEscape(n.source)}</span></p>
-    <h3><a href="${htmlEscape(n.link)}" target="_blank" rel="noopener noreferrer">${htmlEscape(n.title)}</a></h3>
-    <p>${htmlEscape(n.excerpt)}</p>
+    <h3><a href="${htmlEscape(n.link)}" target="_blank" rel="noopener noreferrer">${noWidow(htmlEscape(n.title), 2)}</a></h3>
+    <p>${noWidow(htmlEscape(n.excerpt))}</p>
   </article>`
   )
   .join('\n')}
@@ -746,8 +794,8 @@ geothermal, nuclear and next-generation fuels. Every item links to its original 
     (n, i) => `  <article class="reveal" data-i="${i % 7}">
     <p class="meta"><time datetime="${n.date}">${human(new Date(n.date))}</time>
     <span class="tag tag-x">${htmlEscape(n.source)}</span></p>
-    <h3><a href="${htmlEscape(n.link)}" target="_blank" rel="noopener noreferrer">${htmlEscape(n.title)}</a></h3>
-    <p>${htmlEscape(n.excerpt)}</p>
+    <h3><a href="${htmlEscape(n.link)}" target="_blank" rel="noopener noreferrer">${noWidow(htmlEscape(n.title), 2)}</a></h3>
+    <p>${noWidow(htmlEscape(n.excerpt))}</p>
   </article>`
   )
   .join('\n')}</div>
@@ -768,9 +816,9 @@ for (const e of entries) {
     page(
       `${e.title} — The Gridline`,
       `<p class="kicker"><a href="/" style="color:inherit;text-decoration:none">← The Gridline</a></p>
-<h1 class="measure">${htmlEscape(e.title)}</h1>
-<div class="figwrap in" style="margin-top:1.8rem">${figure(e)}</div>
-<p class="lede measure" style="margin-top:1.8rem">${htmlEscape(e.description)}</p>
+<h1 class="measure">${noWidow(htmlEscape(e.title), 2)}</h1>
+<div class="figwrap in" style="margin-top:1.8rem">${figure(e, 'hero')}</div>
+<p class="lede measure" style="margin-top:1.8rem">${noWidow(htmlEscape(e.description))}</p>
 <p class="meta" style="margin:1.6rem 0 2.6rem;padding-bottom:1.4rem;border-bottom:1px solid var(--rule)"><time datetime="${e.date.toISOString()}">${human(e.date)}</time></p>
 <div class="body">${e.bodyHtml || `<p>${htmlEscape(e.description)}</p>`}</div>
 <p class="back"><a href="/">← All Gridline writing</a></p>
