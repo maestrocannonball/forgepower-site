@@ -22,7 +22,7 @@ const OUT = join(ROOT, 'dist');
 const SITE = {
   title: 'The Gridline — Forge Power',
   description:
-    'Thought leadership on grid resilience, edge compute, and distributed digital infrastructure from Forge Power.',
+    'News and ideas on grid constraint, distributed infrastructure, and the collision between compute demand and a system that was not built for it.',
   origin: 'https://feed.forgepower.ai',
   homepage: 'https://www.forgepower.ai',
   email: 'inquiries@forgepower.ai',
@@ -128,6 +128,13 @@ const entries = readdirSync(CONTENT)
       url: data.url || null, // external (e.g. LinkedIn)
       featured: data.featured === true,
       draft: data.draft === true,
+      // Figure spec — every entry carries a built graphic. See figure().
+      fig: data.fig || 'plates',
+      figA: data.figA ? Number(data.figA) : null,
+      figB: data.figB ? Number(data.figB) : null,
+      figLabelA: data.figLabelA || '',
+      figLabelB: data.figLabelB || '',
+      figUnit: data.figUnit || '',
       bodyHtml: body.trim() ? markdown(body) : '',
     };
   })
@@ -191,6 +198,78 @@ if (existsSync(NEWS_FILE)) {
   } catch (err) {
     console.warn(`Warning: could not read news.json (${err.message}); building without news.`);
   }
+}
+
+
+/* ============================================================
+   FIGURES — one built graphic per story
+   Flat fields, two inks, no gradients. Every figure is derived
+   from the story's own numbers where it has them, and from the
+   brand's registration motif where it does not.
+   ============================================================ */
+
+const FIG_W = 1200;
+const FIG_H = 520;
+
+function figRatio(e) {
+  const a = e.figA ?? 1, b = e.figB ?? 1;
+  const max = Math.max(a, b);
+  const aw = Math.round((a / max) * 940);
+  const bw = Math.round((b / max) * 940);
+  return `
+  <rect class="f-bar f-teal" x="0" y="150" width="${aw}" height="86" style="--w:${aw}"/>
+  <text class="f-num f-t" x="0" y="128">${a}${e.figUnit}</text>
+  <text class="f-lab f-t" x="0" y="266">${htmlEscape(e.figLabelA)}</text>
+  <rect class="f-bar f-amber" x="0" y="330" width="${bw}" height="120" style="--w:${bw}"/>
+  <text class="f-num f-a" x="0" y="312">${b}${e.figUnit}</text>
+  <text class="f-lab f-a" x="0" y="482">${htmlEscape(e.figLabelB)}</text>`;
+}
+
+function figGrid(e) {
+  const cols = 40, rows = 12, total = cols * rows;
+  const share = e.figA && e.figB ? e.figA / e.figB : 0.19;
+  const on = Math.round(total * share);
+  const cw = 1200 / cols, ch = 34;
+  let out = '';
+  for (let i = 0; i < total; i++) {
+    const x = (i % cols) * cw, y = Math.floor(i / cols) * ch;
+    const cls = i < on ? 'f-cell f-on' : 'f-cell f-off';
+    out += `<rect class="${cls}" x="${x.toFixed(1)}" y="${y}" width="${(cw - 6).toFixed(1)}" height="${ch - 6}" style="--d:${(i % cols) * 6 + Math.floor(i / cols) * 18}ms"/>`;
+  }
+  return out;
+}
+
+function figStack(e) {
+  const ratio = e.figA && e.figB ? e.figB / e.figA : 5.19;
+  const full = Math.floor(ratio), frac = ratio - full;
+  const bh = 74, gap = 12;
+  let out = `<rect class="f-bar f-teal" x="0" y="${FIG_H - bh}" width="260" height="${bh}" style="--w:260"/>
+  <text class="f-lab f-t" x="0" y="${FIG_H - bh - 18}">${htmlEscape(e.figLabelA)}</text>`;
+  for (let i = 0; i < full; i++) {
+    const y = FIG_H - (i + 1) * (bh + gap);
+    out += `<rect class="f-bar f-amber" x="340" y="${y}" width="620" height="${bh}" style="--w:620;--d:${i * 70}ms"/>`;
+  }
+  const py = FIG_H - (full + 1) * (bh + gap);
+  out += `<rect class="f-bar f-amber f-part" x="340" y="${py + bh - bh * frac}" width="620" height="${Math.round(bh * frac)}" style="--w:620;--d:${full * 70}ms"/>`;
+  out += `<text class="f-lab f-a" x="340" y="${py - 18}">${htmlEscape(e.figLabelB)}</text>`;
+  return out;
+}
+
+function figPlates() {
+  // The registration motif: three impressions converging into alignment.
+  return `
+  <rect class="f-plate f-p1" x="120" y="90"  width="640" height="340"/>
+  <rect class="f-plate f-p2" x="200" y="130" width="640" height="340"/>
+  <rect class="f-plate f-p3" x="160" y="110" width="640" height="340"/>`;
+}
+
+function figure(e) {
+  const body =
+    e.fig === 'ratio' ? figRatio(e)
+    : e.fig === 'grid' ? figGrid(e)
+    : e.fig === 'stack' ? figStack(e)
+    : figPlates();
+  return `<svg class="fig fig-${e.fig}" viewBox="0 0 ${FIG_W} ${FIG_H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${htmlEscape(e.title)}">${body}</svg>`;
 }
 
 const bySource = [...news.reduce((m, n) => m.set(n.source, (m.get(n.source) || 0) + 1), new Map())]
@@ -321,6 +400,45 @@ footer a{color:var(--muted)}
 footer a:hover{color:var(--teal)}
 
 :focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+
+/* ============================================================
+   FIGURES — the built graphic that leads every story
+   ============================================================ */
+.figwrap{display:block;margin:0 0 1.6rem;background:var(--ground-2);
+  border:1px solid var(--rule);overflow:hidden;position:relative}
+.figwrap::after{content:"";position:absolute;inset:auto 0 0 0;height:3px;
+  background:var(--teal);transform:scaleX(0);transform-origin:left;
+  transition:transform var(--dur-view) var(--ease-out) 120ms}
+.entry.in .figwrap::after,.figwrap.in::after{transform:scaleX(1)}
+.fig{display:block;width:100%;height:auto;padding:2.2rem 2.4rem}
+.f-num{font:900 76px/1 'Roboto',Helvetica,Arial,sans-serif;letter-spacing:-.04em}
+.f-lab{font:700 22px/1 'Roboto',Helvetica,Arial,sans-serif;letter-spacing:.02em}
+.f-t{fill:var(--teal)} .f-a{fill:var(--amber)}
+.f-teal{fill:var(--teal)} .f-amber{fill:var(--amber)}
+
+.f-bar{transform:scaleX(0);transform-origin:left center;
+  transition:transform var(--dur-set) var(--ease-out);transition-delay:var(--d,0ms)}
+.entry.in .f-bar,.fig.in .f-bar{transform:scaleX(1)}
+
+.f-cell{transition:opacity var(--dur-comp) var(--ease-out);transition-delay:var(--d,0ms);opacity:0}
+.entry.in .f-cell,.fig.in .f-cell{opacity:1}
+.f-on{fill:var(--amber)} .f-off{fill:rgba(19,184,167,.22);stroke:rgba(19,184,167,.5);stroke-width:1.5}
+
+.f-plate{opacity:0}
+.f-p1{fill:var(--teal)} .f-p2{fill:var(--amber)} .f-p3{fill:#fff}
+.entry.in .f-p1,.fig.in .f-p1{opacity:.34;animation:pl1 var(--dur-set) var(--ease-out) both}
+.entry.in .f-p2,.fig.in .f-p2{opacity:.30;animation:pl2 var(--dur-set) var(--ease-out) both}
+.entry.in .f-p3,.fig.in .f-p3{opacity:.92;animation:pl3 var(--dur-set) var(--ease-out) both}
+@keyframes pl1{from{transform:translate(-46px,26px);opacity:.9}to{transform:none;opacity:.34}}
+@keyframes pl2{from{transform:translate(44px,-28px);opacity:.9}to{transform:none;opacity:.30}}
+@keyframes pl3{from{transform:translate(10px,8px);opacity:0}to{transform:none;opacity:.92}}
+
+@media (prefers-reduced-motion:reduce){
+  .f-bar{transform:scaleX(1);transition:none}
+  .f-cell{opacity:1;transition:none}
+  .f-plate{animation:none} .f-p1{opacity:.34}.f-p2{opacity:.30}.f-p3{opacity:.92}
+  .figwrap::after{transform:scaleX(1);transition:none}
+}
 
 /* ============================================================
    INFORMATION LAYER — small multiples, stat strip
@@ -457,18 +575,13 @@ writeFileSync(
   </h1>
   <div class="draw"></div>
   <p class="lede" style="margin-top:1.6rem">${htmlEscape(SITE.description)}</p>
-  <div class="strip">
-    <div class="stat"><b>${entries.length}</b><span>Pieces</span></div>
-    <div class="stat t"><b>${bySource.length}</b><span>Sources tracked</span></div>
-    <div class="stat a"><b>${news.length}</b><span>Items in pool</span></div>
-    <div class="stat"><b>${human(entries[0].date)}</b><span>Last published</span></div>
-  </div>
   <p class="meta" style="margin-top:1.2rem"><a href="${SITE.homepage}">forgepower.ai</a></p>
 </section>
 
 ${entries
   .map(
     (e, i) => `<article class="entry reveal${i === 0 ? ' lead' : ''}" data-i="${i}">
+  <a class="figwrap" href="${htmlEscape(e.link)}"${e.external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${figure(e)}</a>
   <p class="meta"><time datetime="${e.date.toISOString()}">${human(e.date)}</time>
   ${e.featured ? '<span class="tag tag-f">Featured</span>' : ''}
   ${e.external ? '<span class="tag tag-x">LinkedIn</span>' : ''}</p>
@@ -556,16 +669,7 @@ ${news
 <h1>Energy &amp; Frontier Tech</h1>
 <p class="lede">Headlines across energy, micro-grids, edge compute, data centers, quantum,
 geothermal, nuclear and next-generation fuels. Every item links to its original publisher.</p>
-<div class="strip">
-  <div class="stat a"><b>${news.length}</b><span>Items</span></div>
-  <div class="stat t"><b>${bySource.length}</b><span>Sources</span></div>
-  <div class="stat"><b>${byTopic.length}</b><span>Topics</span></div>
-</div>
-<p class="kicker" style="margin:2.4rem 0 0">Where it came from</p>
-${multiples(bySource, peak)}
-<p class="kicker" style="margin:2.4rem 0 0">What it was about</p>
-${multiples(byTopic, Math.max(1, ...byTopic.map((r) => r[1])))}
-<p class="meta" style="margin-top:2.4rem"><a href="/news.xml">Subscribe to this feed</a></p>
+<p class="meta" style="margin-top:1.8rem"><a href="/news.xml">Subscribe to this feed</a></p>
 <hr style="border:0;border-top:1px solid var(--rule);margin:2.6rem 0 0">
 ${news.map((n, i) => newsCard(n).replace('<article class="entry">', `<article class="entry reveal" data-i="${i % 7}">`)).join('\n')}
 <footer>Curated automatically from ${new Set(news.map((n) => n.source)).size} industry
@@ -586,7 +690,8 @@ for (const e of entries) {
       `${e.title} — The Gridline`,
       `<p class="kicker"><a href="/" style="color:inherit;text-decoration:none">← The Gridline</a></p>
 <h1>${htmlEscape(e.title)}</h1>
-<p class="lede">${htmlEscape(e.description)}</p>
+<div class="figwrap in" style="margin-top:1.8rem">${figure(e)}</div>
+<p class="lede" style="margin-top:1.6rem">${htmlEscape(e.description)}</p>
 <p class="meta" style="margin:1.6rem 0 2.6rem;padding-bottom:1.4rem;border-bottom:1px solid var(--rule)"><time datetime="${e.date.toISOString()}">${human(e.date)}</time></p>
 <div class="body">${e.bodyHtml || `<p>${htmlEscape(e.description)}</p>`}</div>
 <p class="back"><a href="/">← All Gridline writing</a></p>
