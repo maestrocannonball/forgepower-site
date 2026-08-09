@@ -193,6 +193,25 @@ if (existsSync(NEWS_FILE)) {
   }
 }
 
+const bySource = [...news.reduce((m, n) => m.set(n.source, (m.get(n.source) || 0) + 1), new Map())]
+  .sort((a, b) => b[1] - a[1]);
+const byTopic = [...news.reduce((m, n) => m.set(n.topic, (m.get(n.topic) || 0) + 1), new Map())]
+  .sort((a, b) => b[1] - a[1]);
+const peak = Math.max(1, ...bySource.map((r) => r[1]));
+
+/* Small multiples: one identical cell per value, so the comparison happens
+   inside a single eyespan rather than across a scroll. */
+const multiples = (rows, max) => `<ul class="multiples">
+${rows
+  .map(
+    ([label, n], i) => `  <li class="mult${n >= max ? ' hi' : ''} reveal" data-i="${i % 7}">
+    <span class="track"><span class="fill" style="width:${Math.round((n / max) * 100)}%"></span></span>
+    <span class="lbl"><span class="n">${n}</span>${htmlEscape(label)}</span>
+  </li>`
+  )
+  .join('\n')}
+</ul>`;
+
 const newsCard = (n) => `<article class="entry">
   <p class="meta"><time datetime="${n.date}">${human(new Date(n.date))}</time>
   <span class="tag tag-x">${htmlEscape(n.source)}</span></p>
@@ -222,6 +241,10 @@ ${extraHead}
   --teal:#13b8a7; --amber:#f49e0b; --navy:#0b2138; --live:#00ff15;
   --muted:#8fa0a2; --rule:rgba(255,255,255,.13);
   --measure:68ch;
+  /* motion tokens — see Design canon. Motion must do feedback, continuity or
+     hierarchy. Anything else is decoration. */
+  --dur-micro:160ms; --dur-comp:260ms; --dur-view:420ms; --dur-set:1100ms;
+  --ease-out:cubic-bezier(.16,1,.3,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
@@ -298,6 +321,32 @@ footer a{color:var(--muted)}
 footer a:hover{color:var(--teal)}
 
 :focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+
+/* ============================================================
+   INFORMATION LAYER — small multiples, stat strip
+   Tufte: maximise data-ink, erase everything else. One design
+   repeated across values so comparison happens in one eyespan.
+   ============================================================ */
+.strip{display:flex;flex-wrap:wrap;gap:0 2.4rem;margin:1.8rem 0 0;
+  padding:1rem 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.stat{padding:.35rem 0}
+.stat b{display:block;font-size:1.35rem;font-weight:700;letter-spacing:-.03em;
+  line-height:1;font-variant-numeric:tabular-nums}
+.stat span{display:block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin-top:.35rem}
+.stat.t b{color:var(--teal)} .stat.a b{color:var(--amber)}
+
+.multiples{display:grid;grid-template-columns:repeat(auto-fill,minmax(9.5rem,1fr));
+  gap:.9rem 1.6rem;margin:1.6rem 0 0;padding:0;list-style:none}
+.mult{font-size:.72rem;color:var(--muted);line-height:1.3}
+.mult .n{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:700;
+  font-size:.82rem;margin-right:.3rem}
+.mult .track{display:block;height:3px;background:rgba(255,255,255,.09);margin:.4rem 0 .35rem}
+.mult .fill{display:block;height:3px;background:var(--teal);
+  transform:scaleX(0);transform-origin:left;transition:transform var(--dur-view) var(--ease-out)}
+.in .mult .fill,.mult.in .fill{transform:scaleX(1)}
+.mult.hi .fill{background:var(--amber)}
+.mult .lbl{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* ============================================================
    POSTER LAYER — index only
@@ -408,7 +457,13 @@ writeFileSync(
   </h1>
   <div class="draw"></div>
   <p class="lede" style="margin-top:1.6rem">${htmlEscape(SITE.description)}</p>
-  <p class="meta" style="margin-top:1.4rem"><a href="${SITE.homepage}">forgepower.ai</a></p>
+  <div class="strip">
+    <div class="stat"><b>${entries.length}</b><span>Pieces</span></div>
+    <div class="stat t"><b>${bySource.length}</b><span>Sources tracked</span></div>
+    <div class="stat a"><b>${news.length}</b><span>Items in pool</span></div>
+    <div class="stat"><b>${human(entries[0].date)}</b><span>Last published</span></div>
+  </div>
+  <p class="meta" style="margin-top:1.2rem"><a href="${SITE.homepage}">forgepower.ai</a></p>
 </section>
 
 ${entries
@@ -501,7 +556,17 @@ ${news
 <h1>Energy &amp; Frontier Tech</h1>
 <p class="lede">Headlines across energy, micro-grids, edge compute, data centers, quantum,
 geothermal, nuclear and next-generation fuels. Every item links to its original publisher.</p>
-<p class="meta" style="margin-top:1.4rem"><a href="/news.xml">Subscribe to this feed</a></p>
+<div class="strip">
+  <div class="stat a"><b>${news.length}</b><span>Items</span></div>
+  <div class="stat t"><b>${bySource.length}</b><span>Sources</span></div>
+  <div class="stat"><b>${byTopic.length}</b><span>Topics</span></div>
+</div>
+<p class="kicker" style="margin:2.4rem 0 0">Where it came from</p>
+${multiples(bySource, peak)}
+<p class="kicker" style="margin:2.4rem 0 0">What it was about</p>
+${multiples(byTopic, Math.max(1, ...byTopic.map((r) => r[1])))}
+<p class="meta" style="margin-top:2.4rem"><a href="/news.xml">Subscribe to this feed</a></p>
+<hr style="border:0;border-top:1px solid var(--rule);margin:2.6rem 0 0">
 ${news.map((n, i) => newsCard(n).replace('<article class="entry">', `<article class="entry reveal" data-i="${i % 7}">`)).join('\n')}
 <footer>Curated automatically from ${new Set(news.map((n) => n.source)).size} industry
 sources. Headlines and excerpts remain the property of their publishers.</footer>`
