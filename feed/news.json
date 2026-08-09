@@ -1,7 +1,85 @@
 {
-  "fetchedAt": "2026-08-08T07:18:34.472Z",
+  "fetchedAt": "2026-08-09T06:41:42.516Z",
   "count": 60,
   "items": [
+    {
+      "title": "Matt Kinsella (Infleqtion): Why Neutral Atoms Power Sensors, Clocks, and Computers Alike",
+      "link": "https://thequantuminsider.com/2026/08/08/matt-kinsella-infleqtion-why-neutral-atoms-power-sensors-clocks-and-computers-alike/",
+      "source": "The Quantum Insider",
+      "topic": "quantum",
+      "date": "2026-08-08T19:00:00.000Z",
+      "excerpt": "Yuval Boger interviews Matt Kinsella, CEO of Infleqtion. They discuss Infleqtion’s neutral-atom strategy, including its combination of quantum computing, sensing, and timing products, and why Matt believes that…",
+      "score": 10,
+      "matched": [
+        "quantum computing",
+        "quantum"
+      ]
+    },
+    {
+      "title": "Coreweave Leasing AI Data Center Facilities",
+      "link": "https://www.nextbigfuture.com/2026/08/coreweave-leasing-ai-data-center-facilities.html",
+      "source": "NextBigFuture",
+      "topic": "frontier tech",
+      "date": "2026-08-08T16:16:41.000Z",
+      "excerpt": "CoreWeave ahas heavy reliance on leasing (rather than owning) data-center facilities. It uses a standard real-estate technique—capitalizing an ongoing rent stream—to put leased capacity on the same footing as owned…",
+      "score": 13,
+      "matched": [
+        "data center",
+        "colocation"
+      ]
+    },
+    {
+      "title": "New energy platform assists data centers run off-grid and capture 90% of carbon",
+      "link": "https://interestingengineering.com/energy/plato5x-ai-data-center",
+      "source": "Interesting Engineering",
+      "topic": "frontier tech",
+      "date": "2026-08-08T15:37:39.000Z",
+      "excerpt": "As artificial intelligence fuels an unprecedented boom in data center construction, operators are facing three...",
+      "score": 14,
+      "matched": [
+        "grid",
+        "data center"
+      ]
+    },
+    {
+      "title": "New fuel cell breakthrough could help power energy-hungry data centers",
+      "link": "https://www.sciencedaily.com/releases/2026/08/260807035140.htm",
+      "source": "ScienceDaily — Energy Technology",
+      "topic": "research",
+      "date": "2026-08-08T14:09:02.000Z",
+      "excerpt": "A new nanostructured carbon design lets fuel-cell catalysts use tiny amounts of platinum while remaining remarkably stable and efficient. The breakthrough could help hydrogen fuel cells become a more practical way to…",
+      "score": 14,
+      "matched": [
+        "data center",
+        "hydrogen"
+      ]
+    },
+    {
+      "title": "This tiny gold crystal could bring quantum technology out of the deep freeze",
+      "link": "https://www.sciencedaily.com/releases/2026/08/260806050706.htm",
+      "source": "ScienceDaily — Energy Technology",
+      "topic": "research",
+      "date": "2026-08-08T13:17:32.000Z",
+      "excerpt": "Scientists have created the first quantum material that can sort and transport different quantum states of light at room temperature, potentially removing the need for bulky, ultra-cold refrigeration systems. Built from…",
+      "score": 6,
+      "matched": [
+        "quantum"
+      ]
+    },
+    {
+      "title": "World’s Largest 12.8 GWh Battery Storage Cluster Activated in China",
+      "link": "https://cleantechnica.com/2026/08/08/worlds-largest-12-8-gwh-battery-storage-cluster-activated-in-china/",
+      "source": "CleanTechnica",
+      "topic": "clean energy",
+      "date": "2026-08-08T10:11:14.000Z",
+      "excerpt": "CLEAN energy technology developer Envision Group just completed the final stages of the incorporation of an artificial intelligence (AI) management system into the 12.8-gigawatt-hour battery storage network in northern…",
+      "score": 14,
+      "matched": [
+        "battery storage",
+        "clean energy",
+        "gigawatt"
+      ]
+    },
     {
       "title": "The Road To Green Hydrogen Is Paved With Green Deuterium",
       "link": "https://cleantechnica.com/2026/08/07/green-hydrogen-us-renewable-energy-delaware-mid-atlantic/",
@@ -14,47 +92,6 @@
         "hydrogen",
         "green hydrogen",
         "renewable"
-      ]
-    },
-    {
-      "title": "U.S. Battery Storage Capacity Averaged 70% Growth Over The Last Three Years",
-      "link": "https://cleantechnica.com/2026/08/07/u-s-battery-storage-capacity-averaged-70-growth-over-the-last-three-years/",
-      "source": "CleanTechnica",
-      "topic": "clean energy",
-      "date": "2026-08-08T00:32:31.000Z",
-      "excerpt": "Utility-scale battery storage capacity in the United States increased significantly during the last three years, with an annual average growth rate of 70%. By the end of 2025, the U.S. power system had operational…",
-      "score": 13,
-      "matched": [
-        "battery storage",
-        "utility",
-        "gigawatt"
-      ]
-    },
-    {
-      "title": "Aurora project moves toward 47-hole drilling amid renewed US nuclear fuel push",
-      "link": "https://interestingengineering.com/energy/eagle-nuclear-aurora-project-47-hole-drilling",
-      "source": "Interesting Engineering",
-      "topic": "frontier tech",
-      "date": "2026-08-07T23:57:58.000Z",
-      "excerpt": "The United States wants to rebuild its domestic uranium supply chain, and one newly listed...",
-      "score": 6,
-      "matched": [
-        "nuclear"
-      ]
-    },
-    {
-      "title": "IBM’s 156-qubit processor joins GPUs to calculate electrostatic energy in an enzyme",
-      "link": "https://interestingengineering.com/science/qc-ware-ibm-quantum-processor-hybrid-chemistry",
-      "source": "Interesting Engineering",
-      "topic": "frontier tech",
-      "date": "2026-08-07T23:18:00.000Z",
-      "excerpt": "QC Ware, a California-based quantum computing software company, has combined conventional computing with a quantum...",
-      "score": 20,
-      "matched": [
-        "gpu",
-        "quantum computing",
-        "quantum",
-        "qubit"
       ]
     },
     {
@@ -84,18 +121,6 @@
         "quantum computing",
         "quantum",
         "photonic"
-      ]
-    },
-    {
-      "title": "Quantum-inspired tech lets engineers test tens of thousands of drone designs at once",
-      "link": "https://interestingengineering.com/military/quantum-inspired-computing-drone-propeller-design",
-      "source": "Interesting Engineering",
-      "topic": "frontier tech",
-      "date": "2026-08-07T19:23:07.000Z",
-      "excerpt": "Drone maker Modovolo is using quantum-inspired computing to speed up the design of its next-generation...",
-      "score": 6,
-      "matched": [
-        "quantum"
       ]
     },
     {
@@ -798,34 +823,6 @@
         "virtual power plant",
         "vpp",
         "interconnection"
-      ]
-    },
-    {
-      "title": "Veolia to operate 350MW microgrid for AI data centre in central Ohio",
-      "link": "https://www.energy-storage.news/veolia-to-operate-350mw-microgrid-for-ai-data-centre-in-central-ohio/",
-      "source": "Energy-Storage.News",
-      "topic": "storage",
-      "date": "2026-07-31T11:43:43.000Z",
-      "excerpt": "Environmental services company Veolia has been selected to operate and maintain a 350MW microgrid to power an AI data centre campus in New Albany, Ohio, US, which includes a 430MWh BESS.",
-      "score": 26,
-      "matched": [
-        "microgrid",
-        "grid",
-        "data centre"
-      ]
-    },
-    {
-      "title": "The PJM grid’s largest battery is now under construction in Ohio",
-      "link": "https://electrek.co/2026/07/30/pjm-grid-largest-battery-is-now-under-construction-in-ohio/",
-      "source": "Electrek",
-      "topic": "electrification",
-      "date": "2026-07-30T22:55:14.000Z",
-      "excerpt": "A giant 1 GWh battery is now under construction outside Columbus, Ohio, where data center and industrial development is rapidly pushing up electricity demand.",
-      "score": 15,
-      "matched": [
-        "der",
-        "grid",
-        "data center"
       ]
     }
   ]

@@ -222,14 +222,34 @@ const final = capped
   .sort((a, b) => new Date(b.date) - new Date(a.date))
   .slice(0, MAX_ITEMS);
 
-writeFileSync(
-  OUT_FILE,
-  JSON.stringify(
-    { fetchedAt: new Date().toISOString(), count: final.length, items: final },
-    null,
-    2
-  ) + '\n'
-);
+/*
+  Only rewrite the file when the item set actually changed.
+
+  The scheduled workflow commits news.json when `git diff` reports a change. If
+  we stamped a fresh timestamp on every run, that diff would never be quiet and
+  the job would commit twice a day forever — churning history and triggering
+  pointless rebuilds. So `fetchedAt` records when the items last CHANGED, not
+  when the fetch last ran.
+*/
+const payload = { fetchedAt: new Date().toISOString(), count: final.length, items: final };
+
+let unchanged = false;
+if (existsSync(OUT_FILE)) {
+  try {
+    const prev = JSON.parse(readFileSync(OUT_FILE, 'utf8'));
+    unchanged = JSON.stringify(prev.items) === JSON.stringify(final);
+  } catch {
+    unchanged = false; // unreadable or malformed — rewrite it
+  }
+}
+
+if (unchanged) {
+  console.log(report.join('\n'));
+  console.log(`\nItem set unchanged since last run. Leaving news.json untouched.`);
+  process.exit(0);
+}
+
+writeFileSync(OUT_FILE, JSON.stringify(payload, null, 2) + '\n');
 
 console.log(report.join('\n'));
 console.log(
