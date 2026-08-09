@@ -334,11 +334,12 @@ body{
   hyphens:none; text-align:left;
 }
 ::selection{background:var(--teal);color:var(--ground)}
-.wrap{width:min(100% - 3rem, 46rem);margin:0 auto;padding:0 0 6rem}
+.wrap{width:min(100% - 3rem, 76rem);margin:0 auto;padding:0 0 7rem}
+.measure{max-width:var(--measure)}
 
 /* masthead */
 header.mast{border-bottom:1px solid var(--rule);margin-bottom:3.5rem}
-.mast-in{width:min(100% - 3rem, 46rem);margin:0 auto;padding:1.6rem 0;
+.mast-in{width:min(100% - 3rem, 76rem);margin:0 auto;padding:1.6rem 0;
   display:flex;align-items:center;justify-content:space-between;gap:1.5rem}
 .mast img{width:132px;height:auto;display:block}
 .mast a{text-decoration:none;color:inherit}
@@ -400,6 +401,59 @@ footer a{color:var(--muted)}
 footer a:hover{color:var(--teal)}
 
 :focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+
+
+/* ============================================================
+   LAYOUT SYSTEM — 12 columns, alternating modules
+   The grid is planned first and everything aligns to it. Module
+   rhythm carries hierarchy: lead, split, mirrored split, dense.
+   ============================================================ */
+.canvas{display:grid;grid-template-columns:repeat(12,1fr);
+  column-gap:2rem;row-gap:0;align-items:start}
+.mod{grid-column:1 / -1;display:grid;grid-template-columns:subgrid;
+  padding:3rem 0;border-top:1px solid var(--rule);position:relative}
+.mod > .figwrap{grid-column:1 / -1}
+.mod > .modtext{grid-column:1 / -1}
+
+/* lead — full bleed, poster scale */
+.mod-lead{border-top:2px solid var(--teal);padding-top:2.4rem}
+.mod-lead h2{font-size:clamp(2.2rem,1.3rem+3.4vw,3.6rem);letter-spacing:-.042em;
+  line-height:1.0;max-width:18ch}
+.mod-lead .figwrap{margin-bottom:2rem}
+.mod-lead .fig{padding:3rem 3.2rem}
+
+/* split — figure left, text right */
+@media (min-width:60rem){
+  .mod-a > .figwrap{grid-column:1 / 8}
+  .mod-a > .modtext{grid-column:8 / -1}
+  .mod-b > .figwrap{grid-column:6 / -1;order:2}
+  .mod-b > .modtext{grid-column:1 / 6;order:1}
+  .mod-lead > .figwrap{grid-column:1 / -1}
+  .mod-lead > .modtext{grid-column:1 / 9}
+}
+.mod-a .figwrap,.mod-b .figwrap{margin:0}
+.mod-a h2,.mod-b h2{font-size:clamp(1.3rem,1.05rem+.9vw,1.7rem);max-width:22ch}
+.mod-a .fig,.mod-b .fig{padding:1.6rem 1.8rem}
+.modtext p{max-width:46ch}
+
+/* dense — the news register, deliberately different in texture */
+.dense{grid-column:1 / -1;display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(17rem,1fr));
+  gap:0 2rem;margin-top:1.2rem}
+.dense article{padding:1.1rem 0;border-top:1px solid var(--rule)}
+.dense h3{font-size:.98rem;line-height:1.28;font-weight:700;letter-spacing:-.015em;
+  margin:.3rem 0 .35rem}
+.dense h3 a{color:var(--ink);text-decoration:none}
+.dense h3 a:hover{color:var(--teal)}
+.dense .meta{font-size:.7rem;margin:0 0 .1rem}
+.dense p{font-size:.8rem;color:var(--muted);margin:0;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.dense .tag{font-size:.58rem;padding:.1rem .38rem}
+
+/* section head spans the full canvas */
+.sechead{grid-column:1 / -1;margin-top:4rem;padding-top:2.6rem;
+  border-top:3px solid var(--amber)}
+.sechead h2{font-size:clamp(1.7rem,1.2rem+1.6vw,2.4rem)}
 
 /* ============================================================
    FIGURES — the built graphic that leads every story
@@ -574,36 +628,52 @@ writeFileSync(
     <span class="ink">The Gridline</span>
   </h1>
   <div class="draw"></div>
-  <p class="lede" style="margin-top:1.6rem">${htmlEscape(SITE.description)}</p>
+  <p class="lede measure" style="margin-top:1.6rem">${htmlEscape(SITE.description)}</p>
   <p class="meta" style="margin-top:1.2rem"><a href="${SITE.homepage}">forgepower.ai</a></p>
 </section>
 
+<div class="canvas">
 ${entries
-  .map(
-    (e, i) => `<article class="entry reveal${i === 0 ? ' lead' : ''}" data-i="${i}">
+  .map((e, i) => {
+    // Module rhythm: lead, then alternating split and mirrored split.
+    const mod = i === 0 ? 'mod-lead' : i % 2 === 1 ? 'mod-a' : 'mod-b';
+    return `<article class="mod ${mod} entry reveal" data-i="${i}">
   <a class="figwrap" href="${htmlEscape(e.link)}"${e.external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${figure(e)}</a>
-  <p class="meta"><time datetime="${e.date.toISOString()}">${human(e.date)}</time>
-  ${e.featured ? '<span class="tag tag-f">Featured</span>' : ''}
-  ${e.external ? '<span class="tag tag-x">LinkedIn</span>' : ''}</p>
-  <h2><a href="${htmlEscape(e.link)}"${e.external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${htmlEscape(e.title)}</a></h2>
-  <p>${htmlEscape(e.description)}</p>
-</article>`
-  )
+  <div class="modtext">
+    <p class="meta"><time datetime="${e.date.toISOString()}">${human(e.date)}</time>
+    ${e.featured ? '<span class="tag tag-f">Featured</span>' : ''}
+    ${e.external ? '<span class="tag tag-x">LinkedIn</span>' : ''}</p>
+    <h2><a href="${htmlEscape(e.link)}"${e.external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${htmlEscape(e.title)}</a></h2>
+    <p>${htmlEscape(e.description)}</p>
+  </div>
+</article>`;
+  })
   .join('\n')}
 ${
   news.length
-    ? `<h2 class="section reveal" data-i="0">Energy &amp; Frontier Tech</h2>
-<p class="section-note reveal" data-i="1">Headlines we're tracking across energy, micro-grids, edge
-compute, data centers, quantum, geothermal, nuclear and next-generation fuels. Every item links
-to its original publisher.</p>
-<p class="meta reveal" data-i="1"><a href="/news/">All ${news.length} items</a> · <a href="/news.xml">Subscribe</a></p>
+    ? `<div class="sechead reveal" data-i="0">
+  <h2>Energy &amp; Frontier Tech</h2>
+  <p class="section-note measure">Headlines we're tracking across energy, micro-grids, edge
+  compute, data centers, quantum, geothermal, nuclear and next-generation fuels. Every item
+  links to its original publisher.</p>
+</div>
+<div class="dense">
 ${news
-  .slice(0, 8)
-  .map((n, i) => newsCard(n).replace('<article class="entry">', `<article class="entry reveal" data-i="${i}">`))
+  .slice(0, 12)
+  .map(
+    (n, i) => `  <article class="reveal" data-i="${i % 7}">
+    <p class="meta"><time datetime="${n.date}">${human(new Date(n.date))}</time>
+    <span class="tag tag-x">${htmlEscape(n.source)}</span></p>
+    <h3><a href="${htmlEscape(n.link)}" target="_blank" rel="noopener noreferrer">${htmlEscape(n.title)}</a></h3>
+    <p>${htmlEscape(n.excerpt)}</p>
+  </article>`
+  )
   .join('\n')}
-<p class="more reveal" data-i="0"><a href="/news/">More industry news →</a></p>`
+</div>
+<p class="more reveal" data-i="0" style="grid-column:1 / -1"><a href="/news/">All industry news →</a></p>`
     : ''
 }
+</div>
 <footer>© ${new Date().getFullYear()} Forge Power · <a href="mailto:${SITE.email}">${SITE.email}</a></footer>`
   )
 );
@@ -671,7 +741,16 @@ ${news
 geothermal, nuclear and next-generation fuels. Every item links to its original publisher.</p>
 <p class="meta" style="margin-top:1.8rem"><a href="/news.xml">Subscribe to this feed</a></p>
 <hr style="border:0;border-top:1px solid var(--rule);margin:2.6rem 0 0">
-${news.map((n, i) => newsCard(n).replace('<article class="entry">', `<article class="entry reveal" data-i="${i % 7}">`)).join('\n')}
+<div class="dense">${news
+  .map(
+    (n, i) => `  <article class="reveal" data-i="${i % 7}">
+    <p class="meta"><time datetime="${n.date}">${human(new Date(n.date))}</time>
+    <span class="tag tag-x">${htmlEscape(n.source)}</span></p>
+    <h3><a href="${htmlEscape(n.link)}" target="_blank" rel="noopener noreferrer">${htmlEscape(n.title)}</a></h3>
+    <p>${htmlEscape(n.excerpt)}</p>
+  </article>`
+  )
+  .join('\n')}</div>
 <footer>Curated automatically from ${new Set(news.map((n) => n.source)).size} industry
 sources. Headlines and excerpts remain the property of their publishers.</footer>`
     )
@@ -689,9 +768,9 @@ for (const e of entries) {
     page(
       `${e.title} — The Gridline`,
       `<p class="kicker"><a href="/" style="color:inherit;text-decoration:none">← The Gridline</a></p>
-<h1>${htmlEscape(e.title)}</h1>
+<h1 class="measure">${htmlEscape(e.title)}</h1>
 <div class="figwrap in" style="margin-top:1.8rem">${figure(e)}</div>
-<p class="lede" style="margin-top:1.6rem">${htmlEscape(e.description)}</p>
+<p class="lede measure" style="margin-top:1.8rem">${htmlEscape(e.description)}</p>
 <p class="meta" style="margin:1.6rem 0 2.6rem;padding-bottom:1.4rem;border-bottom:1px solid var(--rule)"><time datetime="${e.date.toISOString()}">${human(e.date)}</time></p>
 <div class="body">${e.bodyHtml || `<p>${htmlEscape(e.description)}</p>`}</div>
 <p class="back"><a href="/">← All Gridline writing</a></p>
