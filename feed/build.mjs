@@ -29,6 +29,29 @@ const SITE = {
   language: 'en-us',
 };
 
+
+/*
+  LOCAL=1 emits a build that runs from the filesystem — relative links, explicit
+  index.html, so index.html can be opened by double-clicking with no server.
+  The deployed build always uses root-relative paths.
+*/
+const LOCAL = !!process.env.LOCAL;
+
+function localise(html, depth = 0) {
+  if (!LOCAL) return html;
+  const p = depth === 0 ? '' : '../'.repeat(depth);
+  return html
+    .replace(/href="\/"/g, `href="${p}index.html"`)
+    .replace(/href="\/news\/"/g, `href="${p}news/index.html"`)
+    .replace(/href="\/news\.xml"/g, `href="${p}news.xml"`)
+    .replace(/href="\/feed\.xml"/g, `href="${p}feed.xml"`)
+    .replace(/src="\/logo\.png"/g, `src="${p}logo.png"`)
+    .replace(
+      new RegExp(`href="${SITE.origin.replace(/[.*+?^$\\{}()|[\]]/g, '\\$&')}/p/([a-z0-9-]+)/"`, 'g'),
+      `href="${p}p/$1/index.html"`
+    );
+}
+
 /* ---------- tiny helpers ---------- */
 
 const xmlEscape = (s = '') =>
@@ -665,7 +688,7 @@ article.entry h2 a{transition:color 220ms ease}
 
 writeFileSync(
   join(OUT, 'index.html'),
-  page(
+  localise(page(
     SITE.title,
     `<section class="hero">
   <p class="kicker">Forge Power</p>
@@ -723,7 +746,7 @@ ${news
 }
 </div>
 <footer>© ${new Date().getFullYear()} Forge Power · <a href="mailto:${SITE.email}">${SITE.email}</a></footer>`
-  )
+  ), 0)
 );
 
 // The wordmark is a real brand asset, never type set to imitate it.
@@ -781,7 +804,7 @@ ${news
   mkdirSync(join(OUT, 'news'), { recursive: true });
   writeFileSync(
     join(OUT, 'news', 'index.html'),
-    page(
+    localise(page(
       'Energy & Frontier Tech — curated by Forge Power',
       `<p class="kicker"><a href="/" style="color:inherit;text-decoration:none">← The Gridline</a></p>
 <h1>Energy &amp; Frontier Tech</h1>
@@ -801,7 +824,7 @@ geothermal, nuclear and next-generation fuels. Every item links to its original 
   .join('\n')}</div>
 <footer>Curated automatically from ${new Set(news.map((n) => n.source)).size} industry
 sources. Headlines and excerpts remain the property of their publishers.</footer>`
-    )
+    ), 1)
   );
 }
 
@@ -813,7 +836,7 @@ for (const e of entries) {
   mkdirSync(dir, { recursive: true });
   writeFileSync(
     join(dir, 'index.html'),
-    page(
+    localise(page(
       `${e.title} — The Gridline`,
       `<p class="kicker"><a href="/" style="color:inherit;text-decoration:none">← The Gridline</a></p>
 <h1 class="measure">${noWidow(htmlEscape(e.title), 2)}</h1>
@@ -824,7 +847,7 @@ for (const e of entries) {
 <p class="back"><a href="/">← All Gridline writing</a></p>
 <footer><a href="${SITE.homepage}">forgepower.ai</a> · <a href="/feed.xml">RSS</a></footer>`,
       `<meta name="description" content="${htmlEscape(e.description)}">`
-    )
+    ), 2)
   );
 }
 
