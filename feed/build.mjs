@@ -337,6 +337,34 @@ function figure(e, variant = 'hero') {
   return `<svg class="fig fig-${e.fig} fig-${variant}" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${htmlEscape(e.title)}">${body}</svg>`;
 }
 
+
+/* ============================================================
+   NEWS SECTIONS
+   Sources carry a granular topic; fifteen headings would be
+   noise. These are the sections a reader actually navigates by.
+   Order is deliberate: closest to Forge's thesis first.
+   ============================================================ */
+const SECTIONS = [
+  { id: 'grid', name: 'Grid & Interconnection', topics: ['grid', 'energy'] },
+  { id: 'compute', name: 'Data Centers & Compute', topics: ['data centers', 'energy + AI'] },
+  { id: 'generation', name: 'Generation', topics: ['generation', 'solar', 'nuclear', 'geothermal', 'clean energy'] },
+  { id: 'storage', name: 'Storage & Electrification', topics: ['storage', 'electrification'] },
+  { id: 'frontier', name: 'Frontier Tech', topics: ['quantum', 'frontier tech', 'research', 'technical'] },
+];
+
+function sectionise(items) {
+  const map = new Map(SECTIONS.map((sec) => [sec.id, { ...sec, items: [] }]));
+  const other = [];
+  for (const n of items) {
+    const sec = SECTIONS.find((x) => x.topics.includes(n.topic));
+    if (sec) map.get(sec.id).items.push(n);
+    else other.push(n);
+  }
+  const out = [...map.values()].filter((sec) => sec.items.length);
+  if (other.length) out.push({ id: 'other', name: 'Also tracking', items: other });
+  return out;
+}
+
 const bySource = [...news.reduce((m, n) => m.set(n.source, (m.get(n.source) || 0) + 1), new Map())]
   .sort((a, b) => b[1] - a[1]);
 const byTopic = [...news.reduce((m, n) => m.set(n.topic, (m.get(n.topic) || 0) + 1), new Map())]
@@ -519,6 +547,20 @@ footer a:hover{color:var(--teal)}
   display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .dense .tag{font-size:.58rem;padding:.1rem .38rem}
 
+.newssec{margin-top:2.4rem}
+.secrule{font-size:.8rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--teal);padding-bottom:.6rem;border-bottom:1px solid rgba(19,184,167,.4);
+  margin:0 0 .4rem}
+.secrule a{color:inherit;text-decoration:none}
+.secrule a:hover{color:var(--amber)}
+.jump{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.8rem 0 .6rem}
+.jump a{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;border:1px solid var(--rule);
+  border-radius:999px;padding:.4rem .8rem;transition:all var(--dur-micro) var(--ease-out)}
+.jump a:hover{color:var(--teal);border-color:rgba(19,184,167,.55)}
+.newssec:target h2.secrule,.newssec:target h3.secrule{color:var(--amber);
+  border-bottom-color:rgba(244,158,11,.55)}
+
 /* section head spans the full canvas */
 .sechead{grid-column:1 / -1;margin-top:4rem;padding-top:2.6rem;
   border-top:3px solid var(--amber)}
@@ -541,18 +583,18 @@ footer a:hover{color:var(--teal)}
 
 .f-bar{transform:scaleX(0);transform-origin:left center;
   transition:transform var(--dur-set) var(--ease-out);transition-delay:var(--d,0ms)}
-.entry.in .f-bar,.fig.in .f-bar{transform:scaleX(1)}
+.entry.in .f-bar,.fig.in .f-bar,.figwrap.in .f-bar{transform:scaleX(1)}
 
 .f-cell{transition:opacity var(--dur-comp) var(--ease-out);transition-delay:var(--d,0ms);opacity:0}
-.entry.in .f-cell,.fig.in .f-cell{opacity:1}
+.entry.in .f-cell,.fig.in .f-cell,.figwrap.in .f-cell{opacity:1}
 .f-live{fill:var(--teal)} .f-dark{fill:rgba(19,184,167,.10);stroke:rgba(19,184,167,.28);stroke-width:1.5}
 .f-on{fill:var(--amber)} .f-off{fill:rgba(19,184,167,.22);stroke:rgba(19,184,167,.5);stroke-width:1.5}
 
 .f-plate{opacity:0}
 .f-p1{fill:var(--teal)} .f-p2{fill:var(--amber)} .f-p3{fill:#fff}
-.entry.in .f-p1,.fig.in .f-p1{opacity:.34;animation:pl1 var(--dur-set) var(--ease-out) both}
-.entry.in .f-p2,.fig.in .f-p2{opacity:.30;animation:pl2 var(--dur-set) var(--ease-out) both}
-.entry.in .f-p3,.fig.in .f-p3{opacity:.92;animation:pl3 var(--dur-set) var(--ease-out) both}
+.entry.in .f-p1,.fig.in .f-p1,.figwrap.in .f-p1{opacity:.34;animation:pl1 var(--dur-set) var(--ease-out) both}
+.entry.in .f-p2,.fig.in .f-p2,.figwrap.in .f-p2{opacity:.30;animation:pl2 var(--dur-set) var(--ease-out) both}
+.entry.in .f-p3,.fig.in .f-p3,.figwrap.in .f-p3{opacity:.92;animation:pl3 var(--dur-set) var(--ease-out) both}
 @keyframes pl1{from{transform:translate(-46px,26px);opacity:.9}to{transform:none;opacity:.34}}
 @keyframes pl2{from{transform:translate(44px,-28px);opacity:.9}to{transform:none;opacity:.30}}
 @keyframes pl3{from{transform:translate(10px,8px);opacity:0}to{transform:none;opacity:.92}}
@@ -728,19 +770,24 @@ ${
   compute, data centers, quantum, geothermal, nuclear and next-generation fuels. Every item
   links to its original publisher.</p>
 </div>
-<div class="dense">
-${news
-  .slice(0, 12)
+${sectionise(news)
   .map(
-    (n, i) => `  <article class="reveal" data-i="${i % 7}">
+    (sec) => `<section class="newssec" style="grid-column:1 / -1">
+  <h3 class="secrule reveal" data-i="0"><a href="/news/#${sec.id}">${htmlEscape(sec.name)}</a></h3>
+  <div class="dense">${sec.items
+    .slice(0, 3)
+    .map(
+      (n, i) => `  <article class="reveal" data-i="${i}">
     <p class="meta"><time datetime="${n.date}">${human(new Date(n.date))}</time>
     <span class="tag tag-x">${htmlEscape(n.source)}</span></p>
     <h3><a href="${htmlEscape(n.link)}" target="_blank" rel="noopener noreferrer">${noWidow(htmlEscape(n.title), 2)}</a></h3>
     <p>${noWidow(htmlEscape(n.excerpt))}</p>
   </article>`
+    )
+    .join('\n')}</div>
+</section>`
   )
   .join('\n')}
-</div>
 <p class="more reveal" data-i="0" style="grid-column:1 / -1"><a href="/news/">All industry news →</a></p>`
     : ''
 }
@@ -812,16 +859,26 @@ ${news
 geothermal, nuclear and next-generation fuels. Every item links to its original publisher.</p>
 <p class="meta" style="margin-top:1.8rem"><a href="/news.xml">Subscribe to this feed</a></p>
 <hr style="border:0;border-top:1px solid var(--rule);margin:2.6rem 0 0">
-<div class="dense">${news
+<nav class="jump reveal" data-i="0">${sectionise(news)
+  .map((sec) => `<a href="#${sec.id}">${htmlEscape(sec.name)}</a>`)
+  .join('')}</nav>
+${sectionise(news)
   .map(
-    (n, i) => `  <article class="reveal" data-i="${i % 7}">
+    (sec) => `<section class="newssec" id="${sec.id}">
+  <h2 class="secrule reveal" data-i="0">${htmlEscape(sec.name)}</h2>
+  <div class="dense">${sec.items
+    .map(
+      (n, i) => `  <article class="reveal" data-i="${i % 7}">
     <p class="meta"><time datetime="${n.date}">${human(new Date(n.date))}</time>
     <span class="tag tag-x">${htmlEscape(n.source)}</span></p>
     <h3><a href="${htmlEscape(n.link)}" target="_blank" rel="noopener noreferrer">${noWidow(htmlEscape(n.title), 2)}</a></h3>
     <p>${noWidow(htmlEscape(n.excerpt))}</p>
   </article>`
+    )
+    .join('\n')}</div>
+</section>`
   )
-  .join('\n')}</div>
+  .join('\n')}
 <footer>Curated automatically from ${new Set(news.map((n) => n.source)).size} industry
 sources. Headlines and excerpts remain the property of their publishers.</footer>`
     ), 1)
