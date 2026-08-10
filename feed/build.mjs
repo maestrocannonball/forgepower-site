@@ -273,17 +273,32 @@ function figRatio(e, W, H) {
   <text class="f-lab f-a" x="0" y="${botY + H * 0.15 + 34}">${htmlEscape(e.figLabelB)}</text>`;
 }
 
+/*
+  The gigawatt field.
+
+  Colour semantics are fixed by the approved social card and must not drift:
+  the SMALLER quantity (figA, the record peak) is the teal ghost block, and the
+  amber solid cells complete the LARGER one (figB, the queue). Amber is the
+  mass. An earlier version of this function had it exactly backwards, so the
+  card and the article's own hero figure told opposite stories about the same
+  two numbers.
+
+  The split variant is 25 x 19 = 475 cells, which is the card's field: one cell
+  is roughly one gigawatt against a 474 GW queue. The hero variant is wider than
+  that arrangement allows, so it reads as a proportional field rather than a
+  countable one. The share is identical either way.
+*/
 function figGrid(e, W, H) {
-  const cols = W > 1000 ? 40 : 26;
-  const rows = W > 1000 ? 12 : 20;
+  const cols = W > 1000 ? 40 : 25;
+  const rows = W > 1000 ? 12 : 19;
   const total = cols * rows;
   const share = e.figA && e.figB ? e.figA / e.figB : 0.19;
-  const on = Math.round(total * share);
+  const ghost = Math.round(total * share);
   const cw = W / cols, ch = H / rows;
   let out = '';
   for (let i = 0; i < total; i++) {
     const x = (i % cols) * cw, y = Math.floor(i / cols) * ch;
-    const cls = i < on ? 'f-cell f-on' : 'f-cell f-off';
+    const cls = i < ghost ? 'f-cell f-off' : 'f-cell f-on';
     out += `<rect class="${cls}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${(cw - 6).toFixed(1)}" height="${(ch - 6).toFixed(1)}" style="--d:${(i % cols) * 6 + Math.floor(i / cols) * 18}ms"/>`;
   }
   return out;
