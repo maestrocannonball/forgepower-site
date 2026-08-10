@@ -98,7 +98,7 @@ async function fetchText(url) {
     const res = await fetch(url, {
       signal: ctl.signal,
       headers: {
-        'User-Agent': 'ForgePowerFeedBot/1.0 (+https://feed.forgepower.ai)',
+        'User-Agent': 'ForgePowerFeedBot/1.0 (+https://gridline.forgepower.ai)',
         Accept: 'application/rss+xml, application/atom+xml, application/xml, text/xml, */*',
       },
       redirect: 'follow',

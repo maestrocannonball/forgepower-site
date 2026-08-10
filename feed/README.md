@@ -1,7 +1,7 @@
 # The Gridline — RSS feed
 
 An auto-updating RSS feed for Forge Power, published at
-**https://feed.forgepower.ai/feed.xml**
+**https://gridline.forgepower.ai/feed.xml**
 
 The main site (www.forgepower.ai) is hosted on Canva, which cannot serve a feed
 file or give articles their own URLs. This directory is a small, self-contained
@@ -128,14 +128,43 @@ Never full article text. Every item links back to where it came from.
 
 ## Deployment
 
-Cloudflare Pages, connected to this repo:
+Cloudflare Pages, connected to this repo.
 
-- **Root directory:** `feed`
-- **Build command:** `node build.mjs`
-- **Output directory:** `dist`
+**Project settings**
+
+| Setting | Value |
+| --- | --- |
+| Root directory | `feed` |
+| Build command | `node build.mjs` |
+| Output directory | `dist` |
+| Environment variables | none |
+
+**Custom domain:** `gridline.forgepower.ai` — add it under the Pages project's
+Custom domains tab, which creates the CNAME for you.
 
 No dependencies, no lockfile, no environment variables. The build is one Node
 script with zero packages — deliberately, so it doesn't rot.
+
+### Why a subdomain and not forgepower.ai/gridline
+
+Canva requires the apex domain to point at its own A record (`103.169.142.0`)
+with Cloudflare proxying **off**. Cloudflare Workers only run on proxied records,
+so nothing can sit in front of the Canva site to route a `/gridline` path. The
+subdomain is independent of that A record and works today.
+
+When forgepower.ai eventually moves off Canva, The Gridline should move to
+`forgepower.ai/gridline` — a path on the main domain consolidates search
+authority, where a subdomain is treated as a separate property. That migration
+needs two things:
+
+1. A base-path option in `build.mjs`. Every internal link is currently root
+   relative (`/news/`, `/p/<slug>/`, `/logo.png`) and assumes a domain root.
+2. Permanent redirects from `gridline.forgepower.ai/*` to the new paths, so
+   existing subscribers and any inbound links keep working.
+
+**Do not change the feed GUIDs during that move.** They are derived from
+filenames, not URLs, precisely so the domain can change without every
+subscriber seeing every post again as new.
 
 ## Why LinkedIn entries are manual
 

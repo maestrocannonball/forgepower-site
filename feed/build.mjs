@@ -23,7 +23,7 @@ const SITE = {
   title: 'The Gridline — Forge Power',
   description:
     'News and ideas on grid constraint, distributed infrastructure, and the collision between compute demand and a system that was not built for it.',
-  origin: 'https://feed.forgepower.ai',
+  origin: 'https://gridline.forgepower.ai',
   homepage: 'https://www.forgepower.ai',
   email: 'inquiries@forgepower.ai',
   language: 'en-us',
