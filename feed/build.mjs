@@ -431,9 +431,20 @@ body{
 .measure{max-width:var(--measure)}
 
 /* masthead */
-header.mast{border-bottom:1px solid var(--rule);margin-bottom:3.5rem}
-.mast-in{width:min(100% - 3rem, 76rem);margin:0 auto;padding:1.6rem 0;
-  display:flex;align-items:center;justify-content:space-between;gap:1.5rem}
+header.mast{position:sticky;top:0;z-index:50;margin-bottom:3.5rem;
+  background:rgba(0,11,13,.90);
+  -webkit-backdrop-filter:saturate(140%) blur(12px);
+          backdrop-filter:saturate(140%) blur(12px);
+  border-bottom:1px solid var(--rule)}
+.mast-in{width:min(100% - 3rem, 76rem);margin:0 auto;padding:1.1rem 0;
+  display:flex;align-items:center;gap:1.5rem}
+/* running head — keeps the masthead name visible once the hero scrolls away */
+.runhead{font-size:.78rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--teal);white-space:nowrap;margin-right:auto;
+  padding-left:1.4rem;border-left:1px solid var(--rule)}
+.runhead a{color:inherit;text-decoration:none}
+.runhead a:hover{color:var(--amber)}
+@media (max-width:34rem){.runhead{display:none}}
 .mast img{width:132px;height:auto;display:block}
 .mast a{text-decoration:none;color:inherit}
 .sub-link{display:inline-flex;align-items:center;gap:.55rem;
@@ -547,7 +558,7 @@ footer a:hover{color:var(--teal)}
   display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .dense .tag{font-size:.58rem;padding:.1rem .38rem}
 
-.newssec{margin-top:2.4rem}
+.newssec{margin-top:2.4rem;scroll-margin-top:6rem}  /* clears the sticky masthead */
 .secrule{font-size:.8rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
   color:var(--teal);padding-bottom:.6rem;border-bottom:1px solid rgba(19,184,167,.4);
   margin:0 0 .4rem}
@@ -681,8 +692,8 @@ article.entry h2 a{transition:color 220ms ease}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.82)}}
 
 /* hairline reading progress */
-.prog{position:fixed;top:0;left:0;height:2px;width:100%;transform:scaleX(0);
-  transform-origin:left;background:var(--teal);opacity:.55;z-index:50}
+.prog{position:absolute;left:0;bottom:-1px;height:2px;width:100%;transform:scaleX(0);
+  transform-origin:left;background:var(--amber);opacity:.9;z-index:51}
 
 @media (prefers-reduced-motion:reduce){
   .plate .t,.plate .a,.draw,.dot{animation:none}
@@ -696,9 +707,9 @@ article.entry h2 a{transition:color 220ms ease}
 <body>
 <header class="mast"><div class="mast-in">
   <a href="/" aria-label="Forge Power"><img src="/logo.png" alt="Forge Power"></a>
+  <p class="runhead"><a href="/">The Gridline</a></p>
   <a class="sub-link" href="/feed.xml"><span class="dot"></span>Subscribe</a>
-</div></header>
-<div class="prog" id="prog"></div>
+</div><div class="prog" id="prog"></div></header>
 <div class="wrap">${inner}</div>
 <script>
 (function(){
