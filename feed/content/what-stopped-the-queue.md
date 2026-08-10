@@ -1,7 +1,7 @@
 ---
 title: 'What Actually Stopped the Queue'
 description: 'In March we argued interconnection throughput was the binding constraint on digital infrastructure. Five months later the largest queue in America stopped moving — for a reason we did not anticipate.'
-pubDate: 2026-08-08
+pubDate: 2026-08-18
 featured: true
 draft: true
 fig: stack

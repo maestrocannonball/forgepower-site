@@ -1,9 +1,9 @@
 ---
 title: 'Five Times Peak'
 description: 'Texas paused data center interconnections and the market lurched. Underneath the whiplash is an old industry doing what it has always done: rationing access to a scarce thing, and building its way around it.'
-pubDate: 2026-08-08
+pubDate: 2026-08-10
 featured: true
-draft: true
+draft: false
 fig: grid
 figA: 91.3
 figB: 474
@@ -14,7 +14,7 @@ figUnit: ' GW'
 
 On August 3, the Governor of Texas directed the PUCT and ERCOT to audit every data center in the interconnection queue before any of them advance. The number behind the order is the one worth sitting with: ERCOT is holding roughly 474 gigawatts of requests across more than 1,800 projects. Around 90 percent are data centers. The state's record peak demand is 91,308 megawatts, set on July 22 of this year.
 
-The queue is more than five times everything Texas has ever drawn — and the record it dwarfs is three weeks old.
+The queue is more than five times everything Texas has ever drawn — and the record it dwarfs is less than three weeks old.
 
 The coverage that followed was loud. It usually is. New York had already halted approvals in July. PJM decided to hand the question to its member states. Three of the most consequential load-growth markets in the country moved within about a month.
 
@@ -62,7 +62,7 @@ The moratorium will lift. The audit will conclude. Batch Zero will resume in som
 
 What will not change is the underlying arithmetic. Compute demand is growing faster than transmission can be planned, permitted, and built — and transmission timelines are measured in years for reasons that are physical and procedural, not attitudinal. When a scarce resource is rationed, its price rises and substitutes appear. That is not a prediction. It is just what happens.
 
-The substitute is already visible. Veolia was selected this month to operate a 350 megawatt behind-the-meter system powering an AI data center campus in central Ohio. The trade press is calling it a micro-grid, which it is not — at that scale it is a private generation plant with a data center attached, and the distinction matters more than the terminology suggests. What it demonstrates is real enough: utility-scale compute is choosing to sit behind the meter rather than wait in front of it. On-site generation and storage were resilience features eighteen months ago. They are becoming the way projects get energized at all.
+The substitute is already visible. On July 30, Veolia was selected to operate a 350 megawatt behind-the-meter system — gas engines, linear generators and 430 megawatt-hours of storage — powering an AI data center campus in New Albany, Ohio. It is designed to supply the site without the grid at all. The trade press is calling it a micro-grid, which it is not — at that scale it is a private generation plant with a data center attached, and the distinction matters more than the terminology suggests. What it demonstrates is real enough: utility-scale compute is choosing to sit behind the meter rather than wait in front of it. On-site generation and storage were resilience features eighteen months ago. They are becoming the way projects get energized at all.
 
 Meanwhile the DC Circuit upheld FERC's plan to accelerate interconnection permitting, which points the same direction from the opposite side: everyone is trying to plug the same gap. Regulators, utilities, developers, and operators are all, in their own idiom and on their own timelines, working the problem. And they are doing it profitably, which is the mechanism by which it actually gets done rather than merely discussed.
 

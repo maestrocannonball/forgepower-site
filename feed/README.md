@@ -63,6 +63,39 @@ Commit to `main` → Cloudflare Pages rebuilds and deploys, usually under a minu
 
 Files beginning with `_` are ignored.
 
+### Artwork
+
+Every entry gets a lead visual. By default it's a figure built from the story's
+own numbers (`fig` plus `figA`/`figB`/`figLabelA`/`figLabelB`/`figUnit`). Set
+`image` instead when a piece was published with real artwork worth keeping.
+
+```markdown
+image: 'five-times-peak.jpg'
+imageAlt: 'Substation switchyard at dusk'
+imageFocus: 'top'
+```
+
+Put the file in `feed/assets/img/`. The build copies it to `/img/` and fails
+loudly if a named file is missing, because a silent hole in a page is worse than
+a failed deploy.
+
+The frame's aspect ratio is the crop — 12:5 for the lead story, 5:4 for the
+split modules — so choose `imageFocus` for what has to survive it.
+
+**Upload images through GitHub's web interface** (Add file → Upload files), not
+through the agent. Binary content sent through the GitHub API integration gets
+double-encoded and arrives corrupt: a 5,244-byte PNG landed as 6,992 bytes when
+this was tested.
+
+#### Why LinkedIn image URLs cannot be hotlinked
+
+`image` accepts an absolute URL, but never point it at `media.licdn.com`.
+LinkedIn's CDN links are signed and time-limited: the `e` parameter is a Unix
+expiry timestamp and `t` is the signature, and LinkedIn's own Images API
+documentation says to re-fetch them periodically because they go stale. A
+hotlinked post image would work for days or weeks and then turn into a broken
+frame with nothing to indicate why. Download the file and commit it.
+
 ## Two rules worth knowing
 
 1. **Never rename a published file.** The filename is the feed GUID. Rename it

@@ -46,6 +46,7 @@ function localise(html, depth = 0) {
     .replace(/href="\/news\.xml"/g, `href="${p}news.xml"`)
     .replace(/href="\/feed\.xml"/g, `href="${p}feed.xml"`)
     .replace(/src="\/logo\.png"/g, `src="${p}logo.png"`)
+    .replace(/src="\/img\//g, `src="${p}img/`)
     .replace(
       new RegExp(`href="${SITE.origin.replace(/[.*+?^$\\{}()|[\]]/g, '\\$&')}/p/([a-z0-9-]+)/"`, 'g'),
       `href="${p}p/$1/index.html"`
@@ -168,6 +169,11 @@ const entries = readdirSync(CONTENT)
       featured: data.featured === true,
       draft: data.draft === true,
       // Figure spec — every entry carries a built graphic. See figure().
+      // Real artwork, when a piece was published with its own image. Takes
+      // precedence over the built figure. See media().
+      image: data.image || null,
+      imageAlt: data.imageAlt || '',
+      imageFocus: data.imageFocus || 'center',
       fig: data.fig || 'plates',
       figA: data.figA ? Number(data.figA) : null,
       figB: data.figB ? Number(data.figB) : null,
@@ -335,6 +341,26 @@ function figure(e, variant = 'hero') {
     : e.fig === 'cascade' ? figCascade(e, W, H)
     : figPlates(e, W, H);
   return `<svg class="fig fig-${e.fig} fig-${variant}" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${htmlEscape(e.title)}">${body}</svg>`;
+}
+
+
+/**
+ * The lead visual for an entry.
+ *
+ * A piece published with its own artwork uses that artwork; everything else
+ * gets the built figure. Photographs sit in the same frame as the figures —
+ * same border, same teal rule drawing across the bottom on reveal — so the two
+ * registers coexist down a page without one looking like a stray.
+ *
+ * `image` is normally a filename in assets/img/, committed to the repo. An
+ * absolute URL works but is discouraged: see the note in the README about
+ * LinkedIn's signed CDN links, which expire.
+ */
+function media(e, variant = 'hero') {
+  if (!e.image) return figure(e, variant);
+  const src = /^https?:\/\//.test(e.image) ? e.image : `/img/${e.image}`;
+  const alt = htmlEscape(e.imageAlt || e.title);
+  return `<img class="ph ph-${variant}" src="${htmlEscape(src)}" alt="${alt}" loading="lazy" decoding="async" style="object-position:${htmlEscape(e.imageFocus)}">`;
 }
 
 
@@ -587,6 +613,17 @@ footer a:hover{color:var(--teal)}
   transition:transform var(--dur-view) var(--ease-out) 120ms}
 .entry.in .figwrap::after,.figwrap.in::after{transform:scaleX(1)}
 .fig{display:block;width:100%;height:auto;padding:2.2rem 2.4rem}
+
+/* Photographs. No padding — a photo fills its frame where a figure floats
+   inside one. Cropping is deliberate: the frame's aspect ratio is the crop, and
+   imageFocus chooses what survives it. The scale settles rather than pans;
+   a photo that keeps moving after it has arrived is decoration. */
+.ph{display:block;width:100%;height:100%;object-fit:cover;
+  transform:scale(1.035);opacity:0;
+  transition:transform var(--dur-set) var(--ease-out),opacity var(--dur-view) var(--ease-out)}
+.entry.in .ph,.figwrap.in .ph{transform:scale(1);opacity:1}
+.figwrap:has(.ph){background:#000}
+@media (prefers-reduced-motion:reduce){.ph{transform:none;opacity:1;transition:none}}
 .f-num{font:900 76px/1 'Roboto',Helvetica,Arial,sans-serif;letter-spacing:-.04em}
 .f-lab{font:700 22px/1 'Roboto',Helvetica,Arial,sans-serif;letter-spacing:.02em}
 .f-t{fill:var(--teal)} .f-a{fill:var(--amber)}
@@ -762,7 +799,7 @@ ${entries
     const mod = i === 0 ? 'mod-lead' : i % 2 === 1 ? 'mod-a' : 'mod-b';
     const variant = i === 0 ? 'hero' : 'split';
     return `<article class="mod ${mod} entry reveal" data-i="${i}">
-  <a class="figwrap" href="${htmlEscape(e.link)}"${e.external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${figure(e, variant)}</a>
+  <a class="figwrap" href="${htmlEscape(e.link)}"${e.external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${media(e, variant)}</a>
   <div class="modtext">
     <p class="meta"><time datetime="${e.date.toISOString()}">${human(e.date)}</time>
     ${e.featured ? '<span class="tag tag-f">Featured</span>' : ''}
@@ -809,6 +846,24 @@ ${sectionise(news)
 
 // The wordmark is a real brand asset, never type set to imitate it.
 copyFileSync(join(ROOT, 'assets', 'logo.png'), join(OUT, 'logo.png'));
+
+// Published artwork, if any. Absent directory is not an error — most entries
+// carry a built figure instead.
+const IMG_SRC = join(ROOT, 'assets', 'img');
+if (existsSync(IMG_SRC)) {
+  const files = readdirSync(IMG_SRC).filter((f) => /\.(png|jpe?g|webp|avif|svg|gif)$/i.test(f));
+  if (files.length) {
+    mkdirSync(join(OUT, 'img'), { recursive: true });
+    for (const f of files) copyFileSync(join(IMG_SRC, f), join(OUT, 'img', f));
+  }
+}
+
+// A missing image is a silent hole in the page, so name it at build time.
+for (const e of entries) {
+  if (e.image && !/^https?:\/\//.test(e.image) && !existsSync(join(IMG_SRC, e.image))) {
+    throw new Error(`${e.slug}.md: image "${e.image}" not found in assets/img/`);
+  }
+}
 
 // Cloudflare Pages reads this. Without it feed.xml is served as text/xml and
 // some readers are fussy; the short cache keeps new posts surfacing quickly.
@@ -908,7 +963,7 @@ for (const e of entries) {
       `${e.title} — The Gridline`,
       `<p class="kicker"><a href="/" style="color:inherit;text-decoration:none">← The Gridline</a></p>
 <h1 class="measure">${noWidow(htmlEscape(e.title), 2)}</h1>
-<div class="figwrap in" style="margin-top:1.8rem">${figure(e, 'hero')}</div>
+<div class="figwrap in" style="margin-top:1.8rem">${media(e, 'hero')}</div>
 <p class="lede measure" style="margin-top:1.8rem">${noWidow(htmlEscape(e.description))}</p>
 <p class="meta" style="margin:1.6rem 0 2.6rem;padding-bottom:1.4rem;border-bottom:1px solid var(--rule)"><time datetime="${e.date.toISOString()}">${human(e.date)}</time></p>
 <div class="body">${e.bodyHtml || `<p>${htmlEscape(e.description)}</p>`}</div>
